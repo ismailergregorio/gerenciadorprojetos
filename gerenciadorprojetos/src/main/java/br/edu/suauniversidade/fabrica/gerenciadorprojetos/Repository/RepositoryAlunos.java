@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import br.edu.suauniversidade.fabrica.gerenciadorprojetos.Model.ClassAlunos;
 
 @Repository
-public interface RepositoryAlunos extends JpaRepository<ClassAlunos,String>{
- Optional<ClassAlunos> findByNome(String ra);
+public interface RepositoryAlunos extends JpaRepository<ClassAlunos, Long> {
+ Optional<ClassAlunos> findByRa(String ra);
 }

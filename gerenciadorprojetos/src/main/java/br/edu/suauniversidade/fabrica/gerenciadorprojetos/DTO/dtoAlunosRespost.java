@@ -3,6 +3,7 @@ package br.edu.suauniversidade.fabrica.gerenciadorprojetos.DTO;
 import br.edu.suauniversidade.fabrica.gerenciadorprojetos.Model.ClassAlunos;
 
 public class dtoAlunosRespost {
+ private String ra;
  private String emailInstitucional;
  private String nome;
  private String curso;
@@ -14,12 +15,20 @@ public class dtoAlunosRespost {
  }
 
  public dtoAlunosRespost(ClassAlunos classAlunos) {
-
+  this.ra = classAlunos.getRa();
   this.emailInstitucional = classAlunos.getEmailInstitucional();
   this.nome = classAlunos.getNome();
   this.curso = classAlunos.getCurso();
   this.projetoSelecionado = classAlunos.getProjetoSelecionado();
   this.motivoDaInscricao = classAlunos.getMotivoDaInscricao();
+ }
+
+ public String getRa() {
+  return ra;
+ }
+
+ public void setRa(String ra) {
+  this.ra = ra;
  }
  
  public String getEmailInstitucional() {

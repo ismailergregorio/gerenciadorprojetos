@@ -19,8 +19,11 @@ import jakarta.websocket.server.PathParam;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+
 
 @RestController
 @RequestMapping("/alunos")
@@ -59,9 +62,9 @@ public class ControllersAlunos {
         return alunos.stream().map(dtoAlunosRespost::new).toList();
     }
 
-    @GetMapping("/aluno{ra}")
+    @GetMapping("/aluno/{ra}")
     public ResponseEntity<dtoAlunosRespost> getAluno(@PathVariable String ra) {
-        Optional<ClassAlunos> alunoOptional = repositoryAlunos.findByNome(ra);
+        Optional<ClassAlunos> alunoOptional = repositoryAlunos.findByRa(ra);
 
         if (alunoOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
@@ -71,12 +74,68 @@ public class ControllersAlunos {
 
         dtoAlunosRespost dtoSelecionado = new dtoAlunosRespost();
 
-        dtoSelecionado.getNome();
-        dtoSelecionado.getEmailInstitucional();
-        dtoSelecionado.getCurso();
-        dtoSelecionado.getProjetoSelecionado();
-        dtoSelecionado.getMotivoDaInscricao();
-        return ResponseEntity.ok(ra);
+        dtoSelecionado.setRa(projeto.getRa());
+        dtoSelecionado.setNome(projeto.getNome());
+        dtoSelecionado.setEmailInstitucional(projeto.getEmailInstitucional());
+        dtoSelecionado.setCurso(projeto.getCurso());
+        dtoSelecionado.setProjetoSelecionado(projeto.getProjetoSelecionado());
+        dtoSelecionado.setMotivoDaInscricao(projeto.getMotivoDaInscricao());
+
+        return ResponseEntity.ok(dtoSelecionado);
+    }
+    @DeleteMapping("/aluno/{ra}")
+    public ResponseEntity<dtoAlunosRespost> delAluno(@PathVariable String ra){
+        Optional<ClassAlunos> deletAluno = repositoryAlunos.findByRa(ra);
+
+        if(deletAluno.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+
+        ClassAlunos alunoDeletado =  deletAluno.get();
+
+        dtoAlunosRespost dtoAlunoResp = new dtoAlunosRespost();
+
+        dtoAlunoResp.setRa(alunoDeletado.getRa());
+        dtoAlunoResp.setNome(alunoDeletado.getNome());
+        dtoAlunoResp.setEmailInstitucional(alunoDeletado.getEmailInstitucional());
+        dtoAlunoResp.setCurso(alunoDeletado.getCurso());
+        dtoAlunoResp.setProjetoSelecionado(alunoDeletado.getProjetoSelecionado());
+        dtoAlunoResp.setMotivoDaInscricao(alunoDeletado.getMotivoDaInscricao());
+
+        repositoryAlunos.delete(alunoDeletado);
+        
+        return ResponseEntity.ok(dtoAlunoResp);
+    }
+    @PutMapping("/aluno/{ra}")
+    public ResponseEntity<dtoAlunosRespost> putMethodName(@PathVariable String ra, @RequestBody dtoAlunosPost dtoAluno) {
+        
+        Optional<ClassAlunos> alunoSelecionado =  repositoryAlunos.findByRa(ra);
+
+        if(alunoSelecionado.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+
+        ClassAlunos alunoEncontrado = alunoSelecionado.get();
+
+        alunoEncontrado.setRa(dtoAluno.getRa());
+        alunoEncontrado.setNome(dtoAluno.getNome());
+        alunoEncontrado.setEmailInstitucional(dtoAluno.getEmailInstitucional());
+        alunoEncontrado.setCurso(dtoAluno.getCurso());
+        alunoEncontrado.setProjetoSelecionado(dtoAluno.getProjetoSelecionado());
+        alunoEncontrado.setMotivoDaInscricao(dtoAluno.getMotivoDaInscricao());
+    
+        repositoryAlunos.save(alunoEncontrado);
+
+        dtoAlunosRespost dtoResposta = new dtoAlunosRespost();
+
+        dtoResposta.setRa(dtoAluno.getRa());
+        dtoResposta.setNome(dtoAluno.getNome());
+        dtoResposta.setEmailInstitucional(dtoAluno.getEmailInstitucional());
+        dtoResposta.setCurso(dtoAluno.getCurso());
+        dtoResposta.setProjetoSelecionado(dtoAluno.getProjetoSelecionado());
+        dtoResposta.setMotivoDaInscricao(dtoAluno.getMotivoDaInscricao());
+        
+        return ResponseEntity.ok(dtoResposta);
     }
 
 }
