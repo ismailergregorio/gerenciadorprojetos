@@ -1,17 +1,34 @@
 package br.edu.suauniversidade.fabrica.gerenciadorprojetos.DTO.ConfgDTOPage;
 
-public class dtoConfigCarrocel {
+import br.edu.suauniversidade.fabrica.gerenciadorprojetos.Model.ClassConfigPage.ClassCarrocel;
 
+public class dtoConfigCarrocelResp {
+
+    private String codigoImagem;
     private String linkImagenCarrocel;
     private Boolean imagenAtivadaDesativada;
 
-    public dtoConfigCarrocel() {
+    public dtoConfigCarrocelResp() {
 
     }
 
-    public dtoConfigCarrocel(String linkImagenCarrocel, Boolean imagenAtivadaDesativada) {
+    public dtoConfigCarrocelResp(String linkImagenCarrocel, Boolean imagenAtivadaDesativada) {
         this.linkImagenCarrocel = linkImagenCarrocel;
         this.imagenAtivadaDesativada = imagenAtivadaDesativada;
+    }
+
+    public dtoConfigCarrocelResp(ClassCarrocel carrocel) {
+        this.codigoImagem = carrocel.getcodigoImagem();
+        this.linkImagenCarrocel =  carrocel.getLinkImagenCarrocel();
+        this.imagenAtivadaDesativada = carrocel.getImagenAtivadaDesativada();
+    }
+
+    public String getcodigoImagem() {
+        return codigoImagem;
+    }
+
+    public void setcodigoImagem(String codigoImagem) {
+        this.codigoImagem = codigoImagem;
     }
 
     public String getLinkImagenCarrocel() {

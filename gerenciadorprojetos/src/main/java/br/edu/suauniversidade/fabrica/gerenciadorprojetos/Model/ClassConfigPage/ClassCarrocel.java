@@ -5,26 +5,37 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "db_carrocel")
-
 public class ClassCarrocel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(unique = true)
+    private String codigoImagem;
     private String linkImagenCarrocel;
     private Boolean imagenAtivadaDesativada;
+
+    public ClassCarrocel(Long id, String codigoImagem, String linkImagenCarrocel,
+            Boolean imagenAtivadaDesativada) {
+        this.id = id;
+        this.codigoImagem = codigoImagem;
+        this.linkImagenCarrocel = linkImagenCarrocel;
+        this.imagenAtivadaDesativada = imagenAtivadaDesativada;
+    }
 
     public ClassCarrocel() {
 
     }
-
-    public ClassCarrocel(Long id, String linkImagenCarrocel, Boolean imagenAtivadaDesativada) {
-        this.id = id;
-        this.linkImagenCarrocel = linkImagenCarrocel;
-        this.imagenAtivadaDesativada = imagenAtivadaDesativada;
+    @PrePersist
+    public void GeradorDeCodigoImg(){
+        String prefixo = "IMG";
+        int numero = (int) (Math.random() * 9000) + 1000;
+        this.codigoImagem = prefixo + numero;
     }
 
     public Long getId() {
@@ -34,6 +45,15 @@ public class ClassCarrocel {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public String getcodigoImagem() {
+        return codigoImagem;
+    }
+
+    public void setcodigoImagem(String codigoImagem) {
+        this.codigoImagem = codigoImagem;
+    }
+
 
     public String getLinkImagenCarrocel() {
         return linkImagenCarrocel;

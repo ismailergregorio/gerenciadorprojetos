@@ -14,8 +14,8 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "db_projetos")
-
 public class ClassProjetos {
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
