@@ -1,7 +1,7 @@
 package br.edu.suauniversidade.fabrica.gerenciadorprojetos.DTO.ConfgDTOPage;
 
 import br.edu.suauniversidade.fabrica.gerenciadorprojetos.Model.ClassConfigPage.ClassCursos;
-import jakarta.persistence.Column;
+
 
 public class dtoClassCursoPost {
     private String nomeDoCurso;
