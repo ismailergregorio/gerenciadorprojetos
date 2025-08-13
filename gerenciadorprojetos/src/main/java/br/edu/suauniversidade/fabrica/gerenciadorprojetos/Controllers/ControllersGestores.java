@@ -3,7 +3,6 @@ package br.edu.suauniversidade.fabrica.gerenciadorprojetos.Controllers;
 import java.util.List;
 import java.util.Optional;
 
-import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -18,10 +17,7 @@ import br.edu.suauniversidade.fabrica.gerenciadorprojetos.DTO.dtoGestoresPost;
 import br.edu.suauniversidade.fabrica.gerenciadorprojetos.DTO.dtoGestoresRespost;
 import br.edu.suauniversidade.fabrica.gerenciadorprojetos.Model.ClassGestores;
 import br.edu.suauniversidade.fabrica.gerenciadorprojetos.Repository.RepositoyGestores;
-import jakarta.websocket.server.PathParam;
 
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
