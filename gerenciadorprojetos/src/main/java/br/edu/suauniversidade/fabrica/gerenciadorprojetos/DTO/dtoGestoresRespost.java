@@ -9,21 +9,24 @@ public class dtoGestoresRespost {
     private String cursoResposavel;
     private String linkImagenGestor;
 
+    public dtoGestoresRespost(String codigoGestor, String name, String descricao, String cursoResposavel,
+            String linkImagenGestor) {
+        this.codigoGestor = codigoGestor;
+        this.name = name;
+        this.descricao = descricao;
+        this.cursoResposavel = cursoResposavel;
+        this.linkImagenGestor = linkImagenGestor;
+    }
+
     public dtoGestoresRespost() {
     }
 
-    public dtoGestoresRespost(ClassGestores gestor) {
+    public dtoGestoresRespost(ClassGestores gestor){
+        this.codigoGestor = gestor.getCodigoGestor();
         this.name = gestor.getName();
-        this.cursoResposavel = gestor.getCursoResposavel();
         this.descricao = gestor.getDescricao();
+        this.cursoResposavel = gestor.getCursoResposavel();
         this.linkImagenGestor = gestor.getLinkImagenGestor();
-    }
-
-    public dtoGestoresRespost(String name, String cursoResposavel, String descricao, String linkImagenGestor) {
-        this.name = name;
-        this.cursoResposavel = cursoResposavel;
-        this.descricao = descricao;
-        this.linkImagenGestor = linkImagenGestor;
     }
 
     public String getCodigoGestor() {
@@ -42,21 +45,20 @@ public class dtoGestoresRespost {
         this.name = name;
     }
 
-        public String getCursoResposavel() {
-        return cursoResposavel;
-    }
-
-    public void setCursoResposavel(String cursoResposavel) {
-        this.cursoResposavel = cursoResposavel;
-    }
-
-
     public String getDescricao() {
         return descricao;
     }
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
+    }
+
+    public String getCursoResposavel() {
+        return cursoResposavel;
+    }
+
+    public void setCursoResposavel(String cursoResposavel) {
+        this.cursoResposavel = cursoResposavel;
     }
 
     public String getLinkImagenGestor() {
@@ -67,3 +69,4 @@ public class dtoGestoresRespost {
         this.linkImagenGestor = linkImagenGestor;
     }
 }
+

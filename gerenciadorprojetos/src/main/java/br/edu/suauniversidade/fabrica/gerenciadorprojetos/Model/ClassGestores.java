@@ -20,6 +20,7 @@ public class ClassGestores {
     private String name;
     @Column(nullable = false, unique = true)
     private String cursoResposavel;
+    
     private String descricao;
     @Column(nullable = false, unique = true)
     private String linkImagenGestor;

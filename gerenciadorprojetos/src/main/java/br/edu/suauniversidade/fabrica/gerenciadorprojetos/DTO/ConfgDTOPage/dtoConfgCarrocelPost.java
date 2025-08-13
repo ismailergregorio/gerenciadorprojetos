@@ -3,7 +3,7 @@ package br.edu.suauniversidade.fabrica.gerenciadorprojetos.DTO.ConfgDTOPage;
 import br.edu.suauniversidade.fabrica.gerenciadorprojetos.Model.ClassConfigPage.ClassCarrocel;
 
 public class dtoConfgCarrocelPost {
-     private String linkImagenCarrocel;
+    private String linkImagenCarrocel;
     private Boolean imagenAtivadaDesativada;
 
     public dtoConfgCarrocelPost() {
