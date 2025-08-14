@@ -39,6 +39,8 @@ public class ClassProjetos {
 
   private String alunosParticipantesDoProjeto;
 
+  private String profesorOrientador;
+
   @Column(unique = true, nullable = false, columnDefinition = "TEXT")
   private String linkGit;
   private String linkImage;
@@ -49,7 +51,7 @@ public class ClassProjetos {
 
   public ClassProjetos(Long id, String identicadorProjetos, String nomeDoProjeto, String descricaoDoProjeto,
       String areaDeConhecimento, LocalDate dataDeInicioDoProjeto, LocalDate dataDoFimDoProjeto,
-      String alunosParticipantesDoProjeto, String linkGit, String linkImage) {
+      String alunosParticipantesDoProjeto,String profesorOrientador, String linkGit, String linkImage) {
     this.id = id;
     this.identicadorProjetos = identicadorProjetos;
     this.nomeDoProjeto = nomeDoProjeto;
@@ -58,6 +60,7 @@ public class ClassProjetos {
     this.dataDeInicioDoProjeto = dataDeInicioDoProjeto;
     this.dataDoFimDoProjeto = dataDoFimDoProjeto;
     this.alunosParticipantesDoProjeto = alunosParticipantesDoProjeto;
+    this.profesorOrientador = profesorOrientador;
     this.linkGit = linkGit;
     this.linkImage = linkImage;
   }
@@ -131,6 +134,15 @@ public class ClassProjetos {
 
   public void setAlunosParticipantesDoProjeto(String alunosParticipantesDoProjeto) {
     this.alunosParticipantesDoProjeto = alunosParticipantesDoProjeto;
+
+  }
+
+  public String getProfesorOrientador() {
+    return profesorOrientador;
+  }
+
+  public void setProfesorOrientador(String profesorOrientador) {
+    this.profesorOrientador = profesorOrientador;
   }
 
   public String getLinkGit() {

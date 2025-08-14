@@ -35,6 +35,7 @@ public class ControllesProjetos {
   projeto.setDataDeInicioDoProjeto(DTO.getDataDeInicioDoProjeto());
   projeto.setDataDoFimDoProjeto(DTO.getDataDoFimDoProjeto());
   projeto.setAlunosParticipantesDoProjeto(DTO.getAlunosParticipantesDoProjeto());
+  projeto.setProfesorOrientador(DTO.getProfesorOrientador());
   projeto.setLinkGit(DTO.getLinkGit());
   projeto.setLinkImage(DTO.getLinkImage());
 
@@ -48,6 +49,7 @@ public class ControllesProjetos {
   dtoProjetoResposta.setDataDeInicioDoProjeto(salvar.getDataDeInicioDoProjeto());
   dtoProjetoResposta.setDataDoFimDoProjeto(salvar.getDataDoFimDoProjeto());
   dtoProjetoResposta.setAlunosParticipantesDoProjeto(salvar.getAlunosParticipantesDoProjeto());
+  dtoProjetoResposta.setProfesorOrientador(salvar.getProfesorOrientador());
   dtoProjetoResposta.setLinkGit(salvar.getLinkGit());
   dtoProjetoResposta.setLinkImage(salvar.getLinkImage());
 
@@ -80,6 +82,7 @@ public class ControllesProjetos {
   dtoSelecionado.setDataDeInicioDoProjeto(projeto.getDataDeInicioDoProjeto());
   dtoSelecionado.setDataDoFimDoProjeto(projeto.getDataDoFimDoProjeto());
   dtoSelecionado.setAlunosParticipantesDoProjeto(projeto.getAlunosParticipantesDoProjeto());
+  dtoSelecionado.setProfesorOrientador(projeto.getProfesorOrientador());
   dtoSelecionado.setLinkGit(projeto.getLinkGit());
   dtoSelecionado.setLinkImage(projeto.getLinkImage());
 
@@ -98,6 +101,13 @@ public class ControllesProjetos {
   ClassProjetos projetoEncontrado = projeto.get();
   projetoEncontrado.setNomeDoProjeto(projetos.getNomeDoProjeto());
   projetoEncontrado.setDescricaoDoProjeto(projetos.getDescricaoDoProjeto());
+  projetoEncontrado.setAreaDeConhecimento(projetos.getAreaDeConhecimento());
+  projetoEncontrado.setDataDeInicioDoProjeto(projetos.getDataDeInicioDoProjeto());
+  projetoEncontrado.setDataDoFimDoProjeto(projetos.getDataDoFimDoProjeto());
+  projetoEncontrado.setAlunosParticipantesDoProjeto(projetos.getAlunosParticipantesDoProjeto());
+  projetoEncontrado.setProfesorOrientador(projetos.getProfesorOrientador());
+  projetoEncontrado.setLinkGit(projetos.getLinkGit());
+  projetoEncontrado.setLinkImage(projetos.getLinkImage());
 
   repositorioProjetos.save(projetoEncontrado);
 

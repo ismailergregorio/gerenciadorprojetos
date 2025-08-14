@@ -18,6 +18,8 @@ public class dtoProjetos {
     private LocalDate dataDeInicioDoProjeto;
     private LocalDate dataDoFimDoProjeto;
     private String alunosParticipantesDoProjeto;
+    private String profesorOrientador;
+
     private String linkGit;
     private String linkImage;
 
@@ -33,6 +35,7 @@ public class dtoProjetos {
         this.dataDeInicioDoProjeto = classProjetos.getDataDeInicioDoProjeto();
         this.dataDoFimDoProjeto = classProjetos.getDataDoFimDoProjeto();
         this.alunosParticipantesDoProjeto = classProjetos.getAlunosParticipantesDoProjeto();
+        this.profesorOrientador = classProjetos.getProfesorOrientador();
         this.linkGit = classProjetos.getLinkGit();
         this.linkImage = classProjetos.getLinkImage();
     }
@@ -91,6 +94,14 @@ public class dtoProjetos {
 
     public void setAlunosParticipantesDoProjeto(String alunosParticipantesDoProjeto) {
         this.alunosParticipantesDoProjeto = alunosParticipantesDoProjeto;
+    }
+
+    public String getProfesorOrientador() {
+        return profesorOrientador;
+    }
+
+    public void setProfesorOrientador(String profesorOrientador) {
+        this.profesorOrientador = profesorOrientador;
     }
 
     public String getLinkGit() {
