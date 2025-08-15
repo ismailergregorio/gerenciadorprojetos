@@ -2,11 +2,14 @@ package br.edu.suauniversidade.fabrica.gerenciadorprojetos.Model;
 
 import java.time.LocalDate;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 //CLASSE DE INSTANCIA DE ALUNOS E A CRIAÇÃO DE TABELA DE ALUNOS
@@ -29,8 +32,9 @@ public class ClassAlunos {
  @Column(nullable = false)
  private String curso;
 
- @Column(nullable = false)
- private String projetoSelecionado;
+ @OneToOne(cascade = CascadeType.ALL)
+ @JoinColumn(referencedColumnName = "identicadorProjetos")
+ private ClassProjetos projetoSelecionado;
 
  @Column(columnDefinition = "TEXT" ,nullable = false)
  private String motivoDaInscricao;
@@ -42,7 +46,7 @@ public class ClassAlunos {
 
  }
 
- public ClassAlunos(Long id, String ra, String emailInstitucional, String nome, String curso, String projetoSelecionado,
+ public ClassAlunos(Long id, String ra, String emailInstitucional, String nome, String curso, ClassProjetos projetoSelecionado,
    String motivoDaInscricao, LocalDate dataInscricao) {
 
   this.id = id;
@@ -95,11 +99,11 @@ public class ClassAlunos {
   this.curso = curso;
  }
 
- public String getProjetoSelecionado() {
+ public ClassProjetos getProjetoSelecionado() {
   return projetoSelecionado;
  }
 
- public void setProjetoSelecionado(String projetoSelecionado) {
+ public void setProjetoSelecionado(ClassProjetos projetoSelecionado) {
   this.projetoSelecionado = projetoSelecionado;
  }
 

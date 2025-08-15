@@ -1,6 +1,7 @@
-package br.edu.suauniversidade.fabrica.gerenciadorprojetos.DTO;
+package br.edu.suauniversidade.fabrica.gerenciadorprojetos.DTO.AlunosDTO;
 
 import br.edu.suauniversidade.fabrica.gerenciadorprojetos.Model.ClassAlunos;
+import br.edu.suauniversidade.fabrica.gerenciadorprojetos.Model.ClassProjetos;
 
 //CLASSE DE CRIAÇÃO DE DTO DE ALUNOS PARA RESPOSTA PARA OS USUARIOS 
 
@@ -21,7 +22,7 @@ public class dtoAlunosRespost {
   this.emailInstitucional = classAlunos.getEmailInstitucional();
   this.nome = classAlunos.getNome();
   this.curso = classAlunos.getCurso();
-  this.projetoSelecionado = classAlunos.getProjetoSelecionado();
+  // this.projetoSelecionado = classAlunos.getProjetoSelecionado();
   this.motivoDaInscricao = classAlunos.getMotivoDaInscricao();
  }
 

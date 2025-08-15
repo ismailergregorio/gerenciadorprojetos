@@ -114,9 +114,9 @@ public class ControllesProjetos {
   return ResponseEntity.ok(projetoEncontrado); // Melhor retornar o produto atualizado
  }
 
- @DeleteMapping("/{id}")
- public ResponseEntity<?> DeleteProduct(@PathVariable Long id, @RequestBody ClassProjetos projetos) {
-  Optional<ClassProjetos> projeto = repositorioProjetos.findById(id);
+ @DeleteMapping("/{identicadorProjetos}")
+ public ResponseEntity<?> DeleteProduct(@PathVariable String identicadorProjetos) {
+  Optional<ClassProjetos> projeto = repositorioProjetos.findByIdenticadorProjetos(identicadorProjetos);
 
   if (projeto.isEmpty()) {
    return ResponseEntity.badRequest().body("Item não encontrado");

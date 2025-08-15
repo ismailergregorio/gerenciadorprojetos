@@ -8,10 +8,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.edu.suauniversidade.fabrica.gerenciadorprojetos.DTO.dtoAlunosPost;
-import br.edu.suauniversidade.fabrica.gerenciadorprojetos.DTO.dtoAlunosRespost;
+import br.edu.suauniversidade.fabrica.gerenciadorprojetos.DTO.AlunosDTO.dtoAlunosPost;
+import br.edu.suauniversidade.fabrica.gerenciadorprojetos.DTO.AlunosDTO.dtoAlunosRespost;
 import br.edu.suauniversidade.fabrica.gerenciadorprojetos.Model.ClassAlunos;
+import br.edu.suauniversidade.fabrica.gerenciadorprojetos.Model.ClassProjetos;
 import br.edu.suauniversidade.fabrica.gerenciadorprojetos.Repository.RepositoryAlunos;
+import br.edu.suauniversidade.fabrica.gerenciadorprojetos.Repository.RepositoryProjetos;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,17 +31,26 @@ public class ControllersAlunos {
     @Autowired
     RepositoryAlunos repositoryAlunos;
 
+    @Autowired
+    RepositoryProjetos repositoryProjetos;
+
     @PostMapping("/addalunos")
     public ResponseEntity<dtoAlunosRespost> postAlunos(@RequestBody dtoAlunosPost dto) {
         // TODO: process POST request
         ClassAlunos aluno = new ClassAlunos();
+
+        Optional<ClassProjetos> projeto = repositoryProjetos.findByIdenticadorProjetos(dto.getProjetoSelecionado());
+
+        if(projeto.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
 
         aluno.setRa(dto.getRa());
         aluno.setNome(dto.getNome());
         aluno.setEmailInstitucional(dto.getEmailInstitucional());
         aluno.setCurso(dto.getCurso());
         aluno.setDataInscricao(dto.getDataInscricao());
-        aluno.setProjetoSelecionado(dto.getProjetoSelecionado());
+        aluno.setProjetoSelecionado(projeto.get());
         aluno.setMotivoDaInscricao(dto.getMotivoDaInscricao());
 
         ClassAlunos salvo = repositoryAlunos.save(aluno);
@@ -50,7 +61,7 @@ public class ControllersAlunos {
         dtoResposta.setNome(salvo.getNome());
         dtoResposta.setEmailInstitucional(salvo.getEmailInstitucional());
         dtoResposta.setCurso(salvo.getCurso());
-        dtoResposta.setProjetoSelecionado(salvo.getProjetoSelecionado());
+        // dtoResposta.setProjetoSelecionado(salvo.getProjetoSelecionado());
         dtoResposta.setMotivoDaInscricao(salvo.getMotivoDaInscricao());
 
         return ResponseEntity.ok(dtoResposta);
@@ -78,7 +89,7 @@ public class ControllersAlunos {
         dtoSelecionado.setNome(projeto.getNome());
         dtoSelecionado.setEmailInstitucional(projeto.getEmailInstitucional());
         dtoSelecionado.setCurso(projeto.getCurso());
-        dtoSelecionado.setProjetoSelecionado(projeto.getProjetoSelecionado());
+        // dtoSelecionado.setProjetoSelecionado(projeto.getProjetoSelecionado());
         dtoSelecionado.setMotivoDaInscricao(projeto.getMotivoDaInscricao());
 
         return ResponseEntity.ok(dtoSelecionado);
@@ -99,7 +110,7 @@ public class ControllersAlunos {
         dtoAlunoResp.setNome(alunoDeletado.getNome());
         dtoAlunoResp.setEmailInstitucional(alunoDeletado.getEmailInstitucional());
         dtoAlunoResp.setCurso(alunoDeletado.getCurso());
-        dtoAlunoResp.setProjetoSelecionado(alunoDeletado.getProjetoSelecionado());
+        // dtoAlunoResp.setProjetoSelecionado(alunoDeletado.getProjetoSelecionado());
         dtoAlunoResp.setMotivoDaInscricao(alunoDeletado.getMotivoDaInscricao());
 
         repositoryAlunos.delete(alunoDeletado);
@@ -121,7 +132,7 @@ public class ControllersAlunos {
         alunoEncontrado.setNome(dtoAluno.getNome());
         alunoEncontrado.setEmailInstitucional(dtoAluno.getEmailInstitucional());
         alunoEncontrado.setCurso(dtoAluno.getCurso());
-        alunoEncontrado.setProjetoSelecionado(dtoAluno.getProjetoSelecionado());
+        // alunoEncontrado.setProjetoSelecionado(dtoAluno.getProjetoSelecionado());
         alunoEncontrado.setMotivoDaInscricao(dtoAluno.getMotivoDaInscricao());
     
         repositoryAlunos.save(alunoEncontrado);
@@ -132,7 +143,7 @@ public class ControllersAlunos {
         dtoResposta.setNome(dtoAluno.getNome());
         dtoResposta.setEmailInstitucional(dtoAluno.getEmailInstitucional());
         dtoResposta.setCurso(dtoAluno.getCurso());
-        dtoResposta.setProjetoSelecionado(dtoAluno.getProjetoSelecionado());
+        // dtoResposta.setProjetoSelecionado(dtoAluno.getProjetoSelecionado());
         dtoResposta.setMotivoDaInscricao(dtoAluno.getMotivoDaInscricao());
         
         return ResponseEntity.ok(dtoResposta);

@@ -1,4 +1,4 @@
-package br.edu.suauniversidade.fabrica.gerenciadorprojetos.DTO;
+package br.edu.suauniversidade.fabrica.gerenciadorprojetos.DTO.AlunosDTO;
 
 import java.time.LocalDate;
 
