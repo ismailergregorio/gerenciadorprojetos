@@ -1,28 +1,23 @@
-package br.edu.suauniversidade.fabrica.gerenciadorprojetos.DTO;
+package br.edu.suauniversidade.fabrica.gerenciadorprojetos.DTO.dtoGestores;
 
-import br.edu.suauniversidade.fabrica.gerenciadorprojetos.Model.ClassGestores;
+import java.util.List;
 
 public class dtoGestoresPost {
     private String name;
     private String descricao;
     private String cursoResposavel;
-
+    private List<String> projetos;
     private String linkImagenGestor;
 
     public dtoGestoresPost() {
     }
 
-    public dtoGestoresPost(ClassGestores gestor) {
-        this.name = gestor.getName();
-        this.cursoResposavel = gestor.getCursoResposavel();
-        this.descricao = gestor.getDescricao();
-        this.linkImagenGestor = gestor.getLinkImagenGestor();
-    }
-
-    public dtoGestoresPost(String name, String cursoResposavel, String descricao, String linkImagenGestor) {
+    public dtoGestoresPost(String name, String descricao, String cursoResposavel, List<String> projetos,
+            String linkImagenGestor) {
         this.name = name;
-        this.cursoResposavel = cursoResposavel;
         this.descricao = descricao;
+        this.cursoResposavel = cursoResposavel;
+        this.projetos = projetos;
         this.linkImagenGestor = linkImagenGestor;
     }
 
@@ -34,6 +29,14 @@ public class dtoGestoresPost {
         this.name = name;
     }
 
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+
     public String getCursoResposavel() {
         return cursoResposavel;
     }
@@ -42,12 +45,12 @@ public class dtoGestoresPost {
         this.cursoResposavel = cursoResposavel;
     }
 
-    public String getDescricao() {
-        return descricao;
+    public List<String> getProjetos() {
+        return projetos;
     }
 
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
+    public void setProjetos(List<String> projetos) {
+        this.projetos = projetos;
     }
 
     public String getLinkImagenGestor() {
@@ -57,4 +60,5 @@ public class dtoGestoresPost {
     public void setLinkImagenGestor(String linkImagenGestor) {
         this.linkImagenGestor = linkImagenGestor;
     }
+
 }

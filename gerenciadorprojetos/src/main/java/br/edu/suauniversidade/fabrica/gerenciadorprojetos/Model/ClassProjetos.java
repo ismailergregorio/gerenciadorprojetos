@@ -12,7 +12,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
@@ -48,7 +48,8 @@ public class ClassProjetos {
   @JsonManagedReference
   private List<ClassAlunos> alunosParticipantesDoProjeto = new ArrayList<>();
 
-  private String profesorOrientador;
+  @ManyToMany(mappedBy = "projetos")
+  private List<ClassGestores> profesorOrientador = new ArrayList<>();
 
   @Column(unique = true, nullable = false, columnDefinition = "TEXT")
   private String linkGit;
@@ -60,7 +61,7 @@ public class ClassProjetos {
 
   public ClassProjetos(Long id, String identicadorProjetos, String nomeDoProjeto, String descricaoDoProjeto,
       String areaDeConhecimento, LocalDate dataDeInicioDoProjeto, LocalDate dataDoFimDoProjeto,
-      List<ClassAlunos> alunosParticipantesDoProjeto, String profesorOrientador, String linkGit, String linkImage) {
+      List<ClassAlunos> alunosParticipantesDoProjeto, List<ClassGestores> profesorOrientador, String linkGit, String linkImage) {
     this.id = id;
     this.identicadorProjetos = identicadorProjetos;
     this.nomeDoProjeto = nomeDoProjeto;
@@ -146,11 +147,11 @@ public class ClassProjetos {
 
   }
 
-  public String getProfesorOrientador() {
+  public List<ClassGestores> getProfesorOrientador() {
     return profesorOrientador;
   }
 
-  public void setProfesorOrientador(String profesorOrientador) {
+  public void setProfesorOrientador(List<ClassGestores> profesorOrientador) {
     this.profesorOrientador = profesorOrientador;
   }
 

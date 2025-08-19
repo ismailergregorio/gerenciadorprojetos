@@ -43,7 +43,7 @@ public class ControllesProjetos {
   projeto.setDataDeInicioDoProjeto(DTO.getDataDeInicioDoProjeto());
   projeto.setDataDoFimDoProjeto(DTO.getDataDoFimDoProjeto());
   // projeto.setAlunosParticipantesDoProjeto(DTO.getAlunosParticipantesDoProjeto());
-  projeto.setProfesorOrientador(DTO.getProfesorOrientador());
+  // projeto.setProfesorOrientador(DTO.getProfesorOrientador());
   projeto.setLinkGit(DTO.getLinkGit());
   projeto.setLinkImage(DTO.getLinkImage());
 
@@ -91,7 +91,7 @@ public class ControllesProjetos {
   dtoSelecionado.setDataDeInicioDoProjeto(projeto.getDataDeInicioDoProjeto());
   dtoSelecionado.setDataDoFimDoProjeto(projeto.getDataDoFimDoProjeto());
   // dtoSelecionado.setAlunosParticipantesDoProjeto(projeto.getAlunosParticipantesDoProjeto());
-  dtoSelecionado.setProfesorOrientador(projeto.getProfesorOrientador());
+  // dtoSelecionado.setProfesorOrientador(projeto.getProfesorOrientador());
   dtoSelecionado.setLinkGit(projeto.getLinkGit());
   dtoSelecionado.setLinkImage(projeto.getLinkImage());
 
@@ -114,7 +114,7 @@ public class ControllesProjetos {
   projetoEncontrado.setDataDeInicioDoProjeto(projeto.getDataDeInicioDoProjeto());
   projetoEncontrado.setDataDoFimDoProjeto(projeto.getDataDoFimDoProjeto());
   // projetoEncontrado.setAlunosParticipantesDoProjeto(projeto.getAlunosParticipantesDoProjeto());
-  projetoEncontrado.setProfesorOrientador(projeto.getProfesorOrientador());
+  // projetoEncontrado.setProfesorOrientador(projeto.getProfesorOrientador());
   projetoEncontrado.setLinkGit(projeto.getLinkGit());
   projetoEncontrado.setLinkImage(projeto.getLinkImage());
 
@@ -128,7 +128,7 @@ public class ControllesProjetos {
   alualizacao.setDataDeInicioDoProjeto(projetoEncontrado.getDataDeInicioDoProjeto());
   alualizacao.setDataDoFimDoProjeto(projetoEncontrado.getDataDoFimDoProjeto());
   // projetoEncontrado.setAlunosParticipantesDoProjeto(projeto.getAlunosParticipantesDoProjeto());
-  alualizacao.setProfesorOrientador(projetoEncontrado.getProfesorOrientador());
+  // alualizacao.setProfesorOrientador(projetoEncontrado.getProfesorOrientador());
   alualizacao.setLinkGit(projetoEncontrado.getLinkGit());
   alualizacao.setLinkImage(projetoEncontrado.getLinkImage());
 

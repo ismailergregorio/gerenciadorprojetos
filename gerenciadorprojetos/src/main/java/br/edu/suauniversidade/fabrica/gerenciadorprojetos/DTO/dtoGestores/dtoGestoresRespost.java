@@ -1,4 +1,4 @@
-package br.edu.suauniversidade.fabrica.gerenciadorprojetos.DTO;
+package br.edu.suauniversidade.fabrica.gerenciadorprojetos.DTO.dtoGestores;
 
 import br.edu.suauniversidade.fabrica.gerenciadorprojetos.Model.ClassGestores;
 

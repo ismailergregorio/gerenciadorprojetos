@@ -34,7 +34,7 @@ public class dtoProjetoResp {
     .stream()
     .map(aluno -> new dtoAlunoRA(aluno.getRa()))
     .collect(Collectors.toList());
-  this.profesorOrientador = projetos.getProfesorOrientador();
+  // this.profesorOrientador = projetos.getProfesorOrientador();
   this.linkGit = projetos.getLinkGit();
   this.linkImage = projetos.getLinkImage();
 
