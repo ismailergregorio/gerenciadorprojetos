@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.edu.suauniversidade.fabrica.gerenciadorprojetos.DTO.AlunosDTO.dtoAlunoAtulizarInfomacao;
 import br.edu.suauniversidade.fabrica.gerenciadorprojetos.DTO.AlunosDTO.dtoAlunosPost;
 import br.edu.suauniversidade.fabrica.gerenciadorprojetos.DTO.AlunosDTO.dtoAlunosRespost;
 import br.edu.suauniversidade.fabrica.gerenciadorprojetos.Model.ClassAlunos;
@@ -22,7 +23,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
-
 
 @RestController
 @RequestMapping("/alunos")
@@ -41,7 +41,7 @@ public class ControllersAlunos {
 
         Optional<ClassProjetos> projeto = repositoryProjetos.findByIdenticadorProjetos(dto.getProjetoSelecionado());
 
-        if(projeto.isEmpty()){
+        if (projeto.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
@@ -94,15 +94,16 @@ public class ControllersAlunos {
 
         return ResponseEntity.ok(dtoSelecionado);
     }
+
     @DeleteMapping("/aluno/{ra}")
-    public ResponseEntity<dtoAlunosRespost> delAluno(@PathVariable String ra){
+    public ResponseEntity<dtoAlunosRespost> delAluno(@PathVariable String ra) {
         Optional<ClassAlunos> deletAluno = repositoryAlunos.findByRa(ra);
 
-        if(deletAluno.isEmpty()){
+        if (deletAluno.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
-        ClassAlunos alunoDeletado =  deletAluno.get();
+        ClassAlunos alunoDeletado = deletAluno.get();
 
         dtoAlunosRespost dtoAlunoResp = new dtoAlunosRespost();
 
@@ -114,11 +115,12 @@ public class ControllersAlunos {
         dtoAlunoResp.setMotivoDaInscricao(alunoDeletado.getMotivoDaInscricao());
 
         repositoryAlunos.delete(alunoDeletado);
-        
+
         return ResponseEntity.ok(dtoAlunoResp);
     }
+
     @PutMapping("/aluno/{ra}")
-    public ResponseEntity<dtoAlunosRespost> putMethodName(@PathVariable String ra, @RequestBody dtoAlunosPost dtoAluno) {
+    public ResponseEntity<dtoAlunosRespost> putMethodName(@PathVariable String ra, @RequestBody dtoAlunoAtulizarInfomacao dtoAluno) {
         
         Optional<ClassAlunos> alunoSelecionado =  repositoryAlunos.findByRa(ra);
 
@@ -127,24 +129,24 @@ public class ControllersAlunos {
         }
 
         ClassAlunos alunoEncontrado = alunoSelecionado.get();
+        
+        if (dtoAluno.getProjetoSelecionado() != null) {
+            Optional<ClassProjetos> projeto = repositoryProjetos.findByIdenticadorProjetos(dtoAluno.getProjetoSelecionado());
+            if (projeto.isPresent()) {
+                alunoEncontrado.setProjetoSelecionado(projeto.get());
+            } else {
+                return ResponseEntity.badRequest().build();
+            }
+        }
 
-        alunoEncontrado.setRa(dtoAluno.getRa());
         alunoEncontrado.setNome(dtoAluno.getNome());
         alunoEncontrado.setEmailInstitucional(dtoAluno.getEmailInstitucional());
         alunoEncontrado.setCurso(dtoAluno.getCurso());
-        // alunoEncontrado.setProjetoSelecionado(dtoAluno.getProjetoSelecionado());
         alunoEncontrado.setMotivoDaInscricao(dtoAluno.getMotivoDaInscricao());
     
-        repositoryAlunos.save(alunoEncontrado);
+        ClassAlunos  novoAluno = repositoryAlunos.save(alunoEncontrado);
 
-        dtoAlunosRespost dtoResposta = new dtoAlunosRespost();
-
-        dtoResposta.setRa(dtoAluno.getRa());
-        dtoResposta.setNome(dtoAluno.getNome());
-        dtoResposta.setEmailInstitucional(dtoAluno.getEmailInstitucional());
-        dtoResposta.setCurso(dtoAluno.getCurso());
-        // dtoResposta.setProjetoSelecionado(dtoAluno.getProjetoSelecionado());
-        dtoResposta.setMotivoDaInscricao(dtoAluno.getMotivoDaInscricao());
+        dtoAlunosRespost dtoResposta = new dtoAlunosRespost(novoAluno);
         
         return ResponseEntity.ok(dtoResposta);
     }

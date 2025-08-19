@@ -8,8 +8,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.edu.suauniversidade.fabrica.gerenciadorprojetos.DTO.dtoProjetos;
+import br.edu.suauniversidade.fabrica.gerenciadorprojetos.DTO.ProjetoDTO.dtoProjetoAtulizacaoInfomacao;
+import br.edu.suauniversidade.fabrica.gerenciadorprojetos.DTO.ProjetoDTO.dtoProjetoPost;
+import br.edu.suauniversidade.fabrica.gerenciadorprojetos.DTO.ProjetoDTO.dtoProjetoResp;
+import br.edu.suauniversidade.fabrica.gerenciadorprojetos.Model.ClassAlunos;
 import br.edu.suauniversidade.fabrica.gerenciadorprojetos.Model.ClassProjetos;
+import br.edu.suauniversidade.fabrica.gerenciadorprojetos.Repository.RepositoryAlunos;
 import br.edu.suauniversidade.fabrica.gerenciadorprojetos.Repository.RepositoryProjetos;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -26,47 +30,52 @@ public class ControllesProjetos {
  @Autowired
  RepositoryProjetos repositorioProjetos;
 
+ @Autowired
+ RepositoryAlunos repositoryAlunos;
+
  @PostMapping("/addprojetos")
- public ResponseEntity<dtoProjetos> CreatinProjeto(@RequestBody dtoProjetos DTO) {
+ public ResponseEntity<dtoProjetoResp> CreatinProjeto(@RequestBody dtoProjetoPost DTO) {
   ClassProjetos projeto = new ClassProjetos();
+  
   projeto.setNomeDoProjeto(DTO.getNomeDoProjeto());
   projeto.setDescricaoDoProjeto(DTO.getDescricaoDoProjeto());
   projeto.setAreaDeConhecimento(DTO.getAreaDeConhecimento());
   projeto.setDataDeInicioDoProjeto(DTO.getDataDeInicioDoProjeto());
   projeto.setDataDoFimDoProjeto(DTO.getDataDoFimDoProjeto());
-  projeto.setAlunosParticipantesDoProjeto(DTO.getAlunosParticipantesDoProjeto());
+  // projeto.setAlunosParticipantesDoProjeto(DTO.getAlunosParticipantesDoProjeto());
   projeto.setProfesorOrientador(DTO.getProfesorOrientador());
   projeto.setLinkGit(DTO.getLinkGit());
   projeto.setLinkImage(DTO.getLinkImage());
 
   ClassProjetos salvar = repositorioProjetos.save(projeto);
 
-  dtoProjetos dtoProjetoResposta = new dtoProjetos(projeto);
+  dtoProjetoResp dtoProjetoResposta = new dtoProjetoResp(salvar);
 
-  dtoProjetoResposta.setNomeDoProjeto(salvar.getNomeDoProjeto());
-  dtoProjetoResposta.setDescricaoDoProjeto(salvar.getDescricaoDoProjeto());
-  dtoProjetoResposta.setAreaDeConhecimento(salvar.getAreaDeConhecimento());
-  dtoProjetoResposta.setDataDeInicioDoProjeto(salvar.getDataDeInicioDoProjeto());
-  dtoProjetoResposta.setDataDoFimDoProjeto(salvar.getDataDoFimDoProjeto());
-  dtoProjetoResposta.setAlunosParticipantesDoProjeto(salvar.getAlunosParticipantesDoProjeto());
-  dtoProjetoResposta.setProfesorOrientador(salvar.getProfesorOrientador());
-  dtoProjetoResposta.setLinkGit(salvar.getLinkGit());
-  dtoProjetoResposta.setLinkImage(salvar.getLinkImage());
+  // dtoProjetoResposta.setIdenticadorProjetos(salvar.getIdenticadorProjetos());
+  // dtoProjetoResposta.setNomeDoProjeto(salvar.getNomeDoProjeto());
+  // dtoProjetoResposta.setDescricaoDoProjeto(salvar.getDescricaoDoProjeto());
+  // dtoProjetoResposta.setAreaDeConhecimento(salvar.getAreaDeConhecimento());
+  // dtoProjetoResposta.setDataDeInicioDoProjeto(salvar.getDataDeInicioDoProjeto());
+  // dtoProjetoResposta.setDataDoFimDoProjeto(salvar.getDataDoFimDoProjeto());
+  // dtoProjetoResposta.setAlunosParticipantesDoProjeto(salvar.getAlunosParticipantesDoProjeto());
+  // dtoProjetoResposta.setProfesorOrientador(salvar.getProfesorOrientador());
+  // dtoProjetoResposta.setLinkGit(salvar.getLinkGit());
+  // dtoProjetoResposta.setLinkImage(salvar.getLinkImage());
 
   return ResponseEntity.ok(dtoProjetoResposta);
  }
 
  @GetMapping("/getprojetos")
- public List<dtoProjetos> GetProjeto() {
+ public List<dtoProjetoResp> GetProjeto() {
   List<ClassProjetos> projetos = repositorioProjetos.findAll();
 
-  return projetos.stream().map(dtoProjetos::new).toList();
+  return projetos.stream().map(dtoProjetoResp::new).toList();
  }
 
- @GetMapping("/getprojetos/{id}")
- public ResponseEntity<dtoProjetos> GetProjetoId(@PathVariable Long id) {
+ @GetMapping("/getprojetos/{identicadorProjetos}")
+ public ResponseEntity<dtoProjetoResp> GetProjetoId(@PathVariable String identicadorProjetos) {
 
-  Optional<ClassProjetos> projetoOptional = repositorioProjetos.findById(id);
+  Optional<ClassProjetos> projetoOptional = repositorioProjetos.findByIdenticadorProjetos(identicadorProjetos);
 
   if (projetoOptional.isEmpty()) {
    return ResponseEntity.notFound().build();
@@ -74,14 +83,14 @@ public class ControllesProjetos {
 
   ClassProjetos projeto = projetoOptional.get();
 
-  dtoProjetos dtoSelecionado = new dtoProjetos();
+  dtoProjetoResp dtoSelecionado = new dtoProjetoResp();
 
   dtoSelecionado.setNomeDoProjeto(projeto.getNomeDoProjeto());
   dtoSelecionado.setDescricaoDoProjeto(projeto.getDescricaoDoProjeto());
   dtoSelecionado.setAreaDeConhecimento(projeto.getAreaDeConhecimento());
   dtoSelecionado.setDataDeInicioDoProjeto(projeto.getDataDeInicioDoProjeto());
   dtoSelecionado.setDataDoFimDoProjeto(projeto.getDataDoFimDoProjeto());
-  dtoSelecionado.setAlunosParticipantesDoProjeto(projeto.getAlunosParticipantesDoProjeto());
+  // dtoSelecionado.setAlunosParticipantesDoProjeto(projeto.getAlunosParticipantesDoProjeto());
   dtoSelecionado.setProfesorOrientador(projeto.getProfesorOrientador());
   dtoSelecionado.setLinkGit(projeto.getLinkGit());
   dtoSelecionado.setLinkImage(projeto.getLinkImage());
@@ -89,29 +98,41 @@ public class ControllesProjetos {
   return ResponseEntity.ok(dtoSelecionado);
  }
 
- @PutMapping("/{id}")
- public ResponseEntity<?> updateProjetos(@PathVariable Long id, @RequestBody ClassProjetos projetos) {
+ @PutMapping("/{identicadorProjetos}")
+ public ResponseEntity<dtoProjetoAtulizacaoInfomacao> updateProjetos(@PathVariable String identicadorProjetos, @RequestBody dtoProjetoAtulizacaoInfomacao projeto) {
 
-  Optional<ClassProjetos> projeto = repositorioProjetos.findById(id);
-
-  if (projeto.isEmpty()) {
-   return ResponseEntity.badRequest().body("Item não encontrado");
+  Optional<ClassProjetos> projetoSelecionado = repositorioProjetos.findByIdenticadorProjetos(identicadorProjetos);
+  if (projetoSelecionado.isEmpty()) {
+   return ResponseEntity.badRequest().build();
   }
 
-  ClassProjetos projetoEncontrado = projeto.get();
-  projetoEncontrado.setNomeDoProjeto(projetos.getNomeDoProjeto());
-  projetoEncontrado.setDescricaoDoProjeto(projetos.getDescricaoDoProjeto());
-  projetoEncontrado.setAreaDeConhecimento(projetos.getAreaDeConhecimento());
-  projetoEncontrado.setDataDeInicioDoProjeto(projetos.getDataDeInicioDoProjeto());
-  projetoEncontrado.setDataDoFimDoProjeto(projetos.getDataDoFimDoProjeto());
-  projetoEncontrado.setAlunosParticipantesDoProjeto(projetos.getAlunosParticipantesDoProjeto());
-  projetoEncontrado.setProfesorOrientador(projetos.getProfesorOrientador());
-  projetoEncontrado.setLinkGit(projetos.getLinkGit());
-  projetoEncontrado.setLinkImage(projetos.getLinkImage());
+  ClassProjetos projetoEncontrado = projetoSelecionado.get();
+
+  projetoEncontrado.setNomeDoProjeto(projeto.getNomeDoProjeto());
+  projetoEncontrado.setDescricaoDoProjeto(projeto.getDescricaoDoProjeto());
+  projetoEncontrado.setAreaDeConhecimento(projeto.getAreaDeConhecimento());
+  projetoEncontrado.setDataDeInicioDoProjeto(projeto.getDataDeInicioDoProjeto());
+  projetoEncontrado.setDataDoFimDoProjeto(projeto.getDataDoFimDoProjeto());
+  // projetoEncontrado.setAlunosParticipantesDoProjeto(projeto.getAlunosParticipantesDoProjeto());
+  projetoEncontrado.setProfesorOrientador(projeto.getProfesorOrientador());
+  projetoEncontrado.setLinkGit(projeto.getLinkGit());
+  projetoEncontrado.setLinkImage(projeto.getLinkImage());
 
   repositorioProjetos.save(projetoEncontrado);
 
-  return ResponseEntity.ok(projetoEncontrado); // Melhor retornar o produto atualizado
+  dtoProjetoAtulizacaoInfomacao alualizacao =  new dtoProjetoAtulizacaoInfomacao();
+
+  alualizacao.setNomeDoProjeto(projetoEncontrado.getNomeDoProjeto());
+  alualizacao.setDescricaoDoProjeto(projetoEncontrado.getDescricaoDoProjeto());
+  alualizacao.setAreaDeConhecimento(projetoEncontrado.getAreaDeConhecimento());
+  alualizacao.setDataDeInicioDoProjeto(projetoEncontrado.getDataDeInicioDoProjeto());
+  alualizacao.setDataDoFimDoProjeto(projetoEncontrado.getDataDoFimDoProjeto());
+  // projetoEncontrado.setAlunosParticipantesDoProjeto(projeto.getAlunosParticipantesDoProjeto());
+  alualizacao.setProfesorOrientador(projetoEncontrado.getProfesorOrientador());
+  alualizacao.setLinkGit(projetoEncontrado.getLinkGit());
+  alualizacao.setLinkImage(projetoEncontrado.getLinkImage());
+
+  return ResponseEntity.ok(alualizacao); // Melhor retornar o produto atualizado
  }
 
  @DeleteMapping("/{identicadorProjetos}")
