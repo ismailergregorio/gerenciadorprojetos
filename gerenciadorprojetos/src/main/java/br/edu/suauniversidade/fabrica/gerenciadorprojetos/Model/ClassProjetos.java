@@ -44,7 +44,7 @@ public class ClassProjetos {
   @Column(nullable = false)
   private LocalDate dataDoFimDoProjeto;
 
-  @OneToMany(mappedBy = "projetoSelecionado",cascade = CascadeType.ALL, orphanRemoval = true)
+  @OneToMany(mappedBy = "projetoSelecionado")
   @JsonManagedReference
   private List<ClassAlunos> alunosParticipantesDoProjeto = new ArrayList<>();
 

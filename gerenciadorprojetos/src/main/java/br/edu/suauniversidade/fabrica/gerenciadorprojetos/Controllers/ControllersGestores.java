@@ -17,7 +17,7 @@ import br.edu.suauniversidade.fabrica.gerenciadorprojetos.DTO.dtoGestores.dtoGes
 import br.edu.suauniversidade.fabrica.gerenciadorprojetos.DTO.dtoGestores.dtoGestoresRespost;
 import br.edu.suauniversidade.fabrica.gerenciadorprojetos.Model.ClassGestores;
 import br.edu.suauniversidade.fabrica.gerenciadorprojetos.Repository.RepositoryProjetos;
-import br.edu.suauniversidade.fabrica.gerenciadorprojetos.Repository.RepositoyGestores;
+import br.edu.suauniversidade.fabrica.gerenciadorprojetos.Repository.RepositoryGestores;
 
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 @CrossOrigin(origins = "*")
 public class ControllersGestores {
     @Autowired
-    RepositoyGestores repositoryGestores;
+    RepositoryGestores repositoryGestores;
 
     @Autowired
     RepositoryProjetos repositoryProjetos;
@@ -37,8 +37,6 @@ public class ControllersGestores {
     @PostMapping("/addgestores")
     public ResponseEntity<dtoGestoresRespost> addGestores(dtoGestoresPost dtogestor) {
         ClassGestores gestor = new ClassGestores();
-
-
 
         gestor.setName(dtogestor.getName());
         gestor.setCursoResposavel(dtogestor.getCursoResposavel());

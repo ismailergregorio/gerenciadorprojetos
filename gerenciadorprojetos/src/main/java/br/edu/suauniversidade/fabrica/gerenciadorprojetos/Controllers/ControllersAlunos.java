@@ -38,11 +38,12 @@ public class ControllersAlunos {
     public ResponseEntity<dtoAlunosRespost> postAlunos(@RequestBody dtoAlunosPost dto) {
         // TODO: process POST request
         ClassAlunos aluno = new ClassAlunos();
-
-        Optional<ClassProjetos> projeto = repositoryProjetos.findByIdenticadorProjetos(dto.getProjetoSelecionado());
-
-        if (projeto.isEmpty()) {
-            return ResponseEntity.notFound().build();
+        Optional<ClassProjetos> projeto;
+        if (dto.getProjetoSelecionado() != null) {
+            projeto = repositoryProjetos.findByIdenticadorProjetos(dto.getProjetoSelecionado());
+            aluno.setProjetoSelecionado(projeto.get());
+        } else {
+            dto.setProjetoSelecionado(null);
         }
 
         aluno.setRa(dto.getRa());
@@ -50,7 +51,6 @@ public class ControllersAlunos {
         aluno.setEmailInstitucional(dto.getEmailInstitucional());
         aluno.setCurso(dto.getCurso());
         aluno.setDataInscricao(dto.getDataInscricao());
-        aluno.setProjetoSelecionado(projeto.get());
         aluno.setMotivoDaInscricao(dto.getMotivoDaInscricao());
 
         ClassAlunos salvo = repositoryAlunos.save(aluno);
@@ -120,18 +120,20 @@ public class ControllersAlunos {
     }
 
     @PutMapping("/aluno/{ra}")
-    public ResponseEntity<dtoAlunosRespost> putMethodName(@PathVariable String ra, @RequestBody dtoAlunoAtulizarInfomacao dtoAluno) {
-        
-        Optional<ClassAlunos> alunoSelecionado =  repositoryAlunos.findByRa(ra);
+    public ResponseEntity<dtoAlunosRespost> putMethodName(@PathVariable String ra,
+            @RequestBody dtoAlunoAtulizarInfomacao dtoAluno) {
 
-        if(alunoSelecionado.isEmpty()){
+        Optional<ClassAlunos> alunoSelecionado = repositoryAlunos.findByRa(ra);
+
+        if (alunoSelecionado.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
         ClassAlunos alunoEncontrado = alunoSelecionado.get();
-        
+
         if (dtoAluno.getProjetoSelecionado() != null) {
-            Optional<ClassProjetos> projeto = repositoryProjetos.findByIdenticadorProjetos(dtoAluno.getProjetoSelecionado());
+            Optional<ClassProjetos> projeto = repositoryProjetos
+                    .findByIdenticadorProjetos(dtoAluno.getProjetoSelecionado());
             if (projeto.isPresent()) {
                 alunoEncontrado.setProjetoSelecionado(projeto.get());
             } else {
@@ -143,11 +145,11 @@ public class ControllersAlunos {
         alunoEncontrado.setEmailInstitucional(dtoAluno.getEmailInstitucional());
         alunoEncontrado.setCurso(dtoAluno.getCurso());
         alunoEncontrado.setMotivoDaInscricao(dtoAluno.getMotivoDaInscricao());
-    
-        ClassAlunos  novoAluno = repositoryAlunos.save(alunoEncontrado);
+
+        ClassAlunos novoAluno = repositoryAlunos.save(alunoEncontrado);
 
         dtoAlunosRespost dtoResposta = new dtoAlunosRespost(novoAluno);
-        
+
         return ResponseEntity.ok(dtoResposta);
     }
 

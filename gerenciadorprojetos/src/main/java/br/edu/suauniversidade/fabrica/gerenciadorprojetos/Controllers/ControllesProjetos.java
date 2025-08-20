@@ -1,5 +1,6 @@
 package br.edu.suauniversidade.fabrica.gerenciadorprojetos.Controllers;
 
+import java.security.Provider.Service;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,6 +16,8 @@ import br.edu.suauniversidade.fabrica.gerenciadorprojetos.DTO.ProjetoDTO.dtoProj
 import br.edu.suauniversidade.fabrica.gerenciadorprojetos.Model.ClassProjetos;
 import br.edu.suauniversidade.fabrica.gerenciadorprojetos.Repository.RepositoryAlunos;
 import br.edu.suauniversidade.fabrica.gerenciadorprojetos.Repository.RepositoryProjetos;
+import br.edu.suauniversidade.fabrica.gerenciadorprojetos.Service.ProjetoService.ServicePostProjetos;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,36 +36,13 @@ public class ControllesProjetos {
  @Autowired
  RepositoryAlunos repositoryAlunos;
 
+ @Autowired
+ ServicePostProjetos servicePostProjetos;
+
  @PostMapping("/addprojetos")
  public ResponseEntity<dtoProjetoResp> CreatinProjeto(@RequestBody dtoProjetoPost DTO) {
-  ClassProjetos projeto = new ClassProjetos();
-  
-  projeto.setNomeDoProjeto(DTO.getNomeDoProjeto());
-  projeto.setDescricaoDoProjeto(DTO.getDescricaoDoProjeto());
-  projeto.setAreaDeConhecimento(DTO.getAreaDeConhecimento());
-  projeto.setDataDeInicioDoProjeto(DTO.getDataDeInicioDoProjeto());
-  projeto.setDataDoFimDoProjeto(DTO.getDataDoFimDoProjeto());
-  // projeto.setAlunosParticipantesDoProjeto(DTO.getAlunosParticipantesDoProjeto());
-  // projeto.setProfesorOrientador(DTO.getProfesorOrientador());
-  projeto.setLinkGit(DTO.getLinkGit());
-  projeto.setLinkImage(DTO.getLinkImage());
-
-  ClassProjetos salvar = repositorioProjetos.save(projeto);
-
-  dtoProjetoResp dtoProjetoResposta = new dtoProjetoResp(salvar);
-
-  // dtoProjetoResposta.setIdenticadorProjetos(salvar.getIdenticadorProjetos());
-  // dtoProjetoResposta.setNomeDoProjeto(salvar.getNomeDoProjeto());
-  // dtoProjetoResposta.setDescricaoDoProjeto(salvar.getDescricaoDoProjeto());
-  // dtoProjetoResposta.setAreaDeConhecimento(salvar.getAreaDeConhecimento());
-  // dtoProjetoResposta.setDataDeInicioDoProjeto(salvar.getDataDeInicioDoProjeto());
-  // dtoProjetoResposta.setDataDoFimDoProjeto(salvar.getDataDoFimDoProjeto());
-  // dtoProjetoResposta.setAlunosParticipantesDoProjeto(salvar.getAlunosParticipantesDoProjeto());
-  // dtoProjetoResposta.setProfesorOrientador(salvar.getProfesorOrientador());
-  // dtoProjetoResposta.setLinkGit(salvar.getLinkGit());
-  // dtoProjetoResposta.setLinkImage(salvar.getLinkImage());
-
-  return ResponseEntity.ok(dtoProjetoResposta);
+  ResponseEntity<dtoProjetoResp> gestore = servicePostProjetos.postProjeto(DTO);
+  return gestore;
  }
 
  @GetMapping("/getprojetos")

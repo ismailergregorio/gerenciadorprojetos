@@ -10,13 +10,13 @@ public class dtoProjetoPost {
  private LocalDate dataDeInicioDoProjeto;
  private LocalDate dataDoFimDoProjeto;
  private List<String> alunosParticipantesDoProjeto;
- private String profesorOrientador;
+ private List<String> profesorOrientador;
  private String linkGit;
  private String linkImage;
 
  public dtoProjetoPost(String nomeDoProjeto, String descricaoDoProjeto, String areaDeConhecimento,
    LocalDate dataDeInicioDoProjeto, LocalDate dataDoFimDoProjeto, List<String> alunosParticipantesDoProjeto,
-   String profesorOrientador, String linkGit, String linkImage) {
+   List<String> profesorOrientador, String linkGit, String linkImage) {
   this.nomeDoProjeto = nomeDoProjeto;
   this.descricaoDoProjeto = descricaoDoProjeto;
   this.areaDeConhecimento = areaDeConhecimento;
@@ -76,11 +76,11 @@ public class dtoProjetoPost {
   this.alunosParticipantesDoProjeto = alunosParticipantesDoProjeto;
  }
 
- public String getProfesorOrientador() {
+ public List<String> getProfesorOrientador() {
   return profesorOrientador;
  }
 
- public void setProfesorOrientador(String profesorOrientador) {
+ public void setProfesorOrientador(List<String> profesorOrientador) {
   this.profesorOrientador = profesorOrientador;
  }
 

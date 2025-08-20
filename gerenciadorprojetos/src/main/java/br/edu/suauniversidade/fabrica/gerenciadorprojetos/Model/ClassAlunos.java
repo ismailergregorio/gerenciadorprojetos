@@ -33,8 +33,8 @@ public class ClassAlunos {
  @Column(nullable = false)
  private String curso;
 
- @ManyToOne
- @JoinColumn(name = "projeto",referencedColumnName = "identicadorProjetos", nullable = false)
+ @ManyToOne(optional = true)
+ @JoinColumn(name = "projeto",referencedColumnName = "identicadorProjetos")
  @JsonBackReference
  private ClassProjetos projetoSelecionado;
 

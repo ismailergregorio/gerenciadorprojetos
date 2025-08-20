@@ -6,7 +6,6 @@ public class dtoGestoresPost {
     private String name;
     private String descricao;
     private String cursoResposavel;
-    private List<String> projetos;
     private String linkImagenGestor;
 
     public dtoGestoresPost() {
@@ -17,7 +16,6 @@ public class dtoGestoresPost {
         this.name = name;
         this.descricao = descricao;
         this.cursoResposavel = cursoResposavel;
-        this.projetos = projetos;
         this.linkImagenGestor = linkImagenGestor;
     }
 
@@ -43,14 +41,6 @@ public class dtoGestoresPost {
 
     public void setCursoResposavel(String cursoResposavel) {
         this.cursoResposavel = cursoResposavel;
-    }
-
-    public List<String> getProjetos() {
-        return projetos;
-    }
-
-    public void setProjetos(List<String> projetos) {
-        this.projetos = projetos;
     }
 
     public String getLinkImagenGestor() {

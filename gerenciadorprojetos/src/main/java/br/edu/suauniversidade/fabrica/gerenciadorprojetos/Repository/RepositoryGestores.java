@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 
 import br.edu.suauniversidade.fabrica.gerenciadorprojetos.Model.ClassGestores;
 @Repository
-public interface RepositoyGestores extends JpaRepository<ClassGestores,Long>{
+public interface RepositoryGestores extends JpaRepository<ClassGestores,Long>{
     Optional<ClassGestores> findByCodigoGestor(String codigoGestor);   
 }
