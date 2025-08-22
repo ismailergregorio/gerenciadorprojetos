@@ -39,8 +39,9 @@ public class ControllersAlunos {
         // TODO: process POST request
         ClassAlunos aluno = new ClassAlunos();
         Optional<ClassProjetos> projeto;
+
         if (dto.getProjetoSelecionado() != null) {
-            projeto = repositoryProjetos.findByIdenticadorProjetos(dto.getProjetoSelecionado());
+            projeto = repositoryProjetos.findByCodigoProjeto(dto.getProjetoSelecionado());
             aluno.setProjetoSelecionado(projeto.get());
         } else {
             dto.setProjetoSelecionado(null);
@@ -61,7 +62,7 @@ public class ControllersAlunos {
         dtoResposta.setNome(salvo.getNome());
         dtoResposta.setEmailInstitucional(salvo.getEmailInstitucional());
         dtoResposta.setCurso(salvo.getCurso());
-        dtoResposta.setProjetoSelecionado(salvo.getProjetoSelecionado().getIdenticadorProjetos());
+        dtoResposta.setProjetoSelecionado((salvo.getProjetoSelecionado().getCodigoProjeto() != null) ? salvo.getProjetoSelecionado().getCodigoProjeto() : null);
         dtoResposta.setMotivoDaInscricao(salvo.getMotivoDaInscricao());
 
         return ResponseEntity.ok(dtoResposta);
@@ -133,7 +134,7 @@ public class ControllersAlunos {
 
         if (dtoAluno.getProjetoSelecionado() != null) {
             Optional<ClassProjetos> projeto = repositoryProjetos
-                    .findByIdenticadorProjetos(dtoAluno.getProjetoSelecionado());
+                    .findByCodigoProjeto(dtoAluno.getProjetoSelecionado());
             if (projeto.isPresent()) {
                 alunoEncontrado.setProjetoSelecionado(projeto.get());
             } else {

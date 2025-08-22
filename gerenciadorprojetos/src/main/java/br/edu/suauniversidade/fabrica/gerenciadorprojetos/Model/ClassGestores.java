@@ -42,7 +42,7 @@ public class ClassGestores {
         joinColumns = {
             @JoinColumn(name = "codigo_gestor", referencedColumnName = "codigoGestor")},
         inverseJoinColumns = {
-            @JoinColumn(name = "codigo_projeto",referencedColumnName = "identicadorProjetos")
+            @JoinColumn(name = "codigo_projeto",referencedColumnName = "codigoProjeto")
         }
     )
     private List<ClassProjetos> projetos = new ArrayList<>();

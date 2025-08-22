@@ -13,5 +13,7 @@ import br.edu.suauniversidade.fabrica.gerenciadorprojetos.Model.ClassProjetos;
 @Repository
 public interface RepositoryAlunos extends JpaRepository<ClassAlunos, Long> {
  Optional<ClassAlunos> findByRa(String ra);
+ boolean existsByRaAndProjetoSelecionadoIsNotNull(String ra);
+ 
  Optional<ClassAlunos> findByProjetoSelecionado(ClassProjetos projetoSelecionado);
 }

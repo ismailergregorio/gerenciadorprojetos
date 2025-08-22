@@ -34,7 +34,7 @@ public class ClassAlunos {
  private String curso;
 
  @ManyToOne(optional = true)
- @JoinColumn(name = "projeto",referencedColumnName = "identicadorProjetos")
+ @JoinColumn(name = "projeto",referencedColumnName = "codigoProjeto", nullable = true)
  @JsonBackReference
  private ClassProjetos projetoSelecionado;
 

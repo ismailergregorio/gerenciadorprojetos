@@ -11,5 +11,5 @@ import br.edu.suauniversidade.fabrica.gerenciadorprojetos.Model.ClassProjetos;
 
 @Repository
 public interface RepositoryProjetos extends JpaRepository<ClassProjetos,Long>{
-  Optional<ClassProjetos> findByIdenticadorProjetos(String identicadorProjetos);
+  Optional<ClassProjetos> findByCodigoProjeto(String codigoProjeto);
 }

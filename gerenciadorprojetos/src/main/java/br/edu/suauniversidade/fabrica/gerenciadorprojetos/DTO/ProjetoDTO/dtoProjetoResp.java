@@ -1,6 +1,7 @@
 package br.edu.suauniversidade.fabrica.gerenciadorprojetos.DTO.ProjetoDTO;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -9,7 +10,7 @@ import br.edu.suauniversidade.fabrica.gerenciadorprojetos.Model.ClassGestores;
 import br.edu.suauniversidade.fabrica.gerenciadorprojetos.Model.ClassProjetos;
 
 public class dtoProjetoResp {
-  private String identicadorProjetos;
+  private String codigoProjeto;
   private String nomeDoProjeto;
   private String descricaoDoProjeto;
   private String areaDeConhecimento;
@@ -25,30 +26,38 @@ public class dtoProjetoResp {
   }
 
   public dtoProjetoResp(ClassProjetos projetos) {
-    this.identicadorProjetos = projetos.getIdenticadorProjetos();
+    this.codigoProjeto = projetos.getCodigoProjeto();
     this.nomeDoProjeto = projetos.getNomeDoProjeto();
     this.descricaoDoProjeto = projetos.getDescricaoDoProjeto();
     this.areaDeConhecimento = projetos.getAreaDeConhecimento();
     this.dataDeInicioDoProjeto = projetos.getDataDeInicioDoProjeto();
     this.dataDoFimDoProjeto = projetos.getDataDoFimDoProjeto();
-    this.alunosParticipantesDoProjeto = projetos.getAlunosParticipantesDoProjeto().stream()
-    .map(ClassAlunos::getRa)
-    .collect(Collectors.toList());
+    if (projetos.getAlunosParticipantesDoProjeto() != null) {
+      this.alunosParticipantesDoProjeto = projetos.getAlunosParticipantesDoProjeto().stream()
+          .map(ClassAlunos::getRa)
+          .collect(Collectors.toList());
+    } else {
+      this.alunosParticipantesDoProjeto = new ArrayList<>();
+    }
 
-    this.profesorOrientador = projetos.getProfesorOrientador().stream()
-    .map(ClassGestores::getCodigoGestor) // ou getNome(), dependendo do que você quer retornar
-    .collect(Collectors.toList());
+    if (projetos.getProfesorOrientador() != null) {
+      this.profesorOrientador = projetos.getProfesorOrientador().stream()
+          .map(ClassGestores::getCodigoGestor) // ou getNome(), dependendo do que você quer retornar
+          .collect(Collectors.toList());
+    } else {
+      this.profesorOrientador = new ArrayList<>();
+    }
     this.linkGit = projetos.getLinkGit();
     this.linkImage = projetos.getLinkImage();
 
   }
 
-  public dtoProjetoResp(String identicadorProjetos, String nomeDoProjeto, String descricaoDoProjeto,
+  public dtoProjetoResp(String codigoProjeto, String nomeDoProjeto, String descricaoDoProjeto,
       String areaDeConhecimento, LocalDate dataDeInicioDoProjeto, LocalDate dataDoFimDoProjeto,
       List<String> alunosParticipantesDoProjeto, List<String> profesorOrientador, String linkGit,
       String linkImage) {
 
-    this.identicadorProjetos = identicadorProjetos;
+    this.codigoProjeto = codigoProjeto;
     this.nomeDoProjeto = nomeDoProjeto;
     this.descricaoDoProjeto = descricaoDoProjeto;
     this.areaDeConhecimento = areaDeConhecimento;
@@ -60,12 +69,12 @@ public class dtoProjetoResp {
     this.linkImage = linkImage;
   }
 
-  public String getIdenticadorProjetos() {
-    return identicadorProjetos;
+  public String getCodigoProjeto() {
+    return codigoProjeto;
   }
 
-  public void setIdenticadorProjetos(String identicadorProjetos) {
-    this.identicadorProjetos = identicadorProjetos;
+  public void setCodigoProjeto(String codigoProjeto) {
+    this.codigoProjeto = codigoProjeto;
   }
 
   public String getNomeDoProjeto() {

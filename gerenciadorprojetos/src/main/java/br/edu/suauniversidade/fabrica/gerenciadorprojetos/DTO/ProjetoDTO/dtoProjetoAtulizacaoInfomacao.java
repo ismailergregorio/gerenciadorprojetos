@@ -3,7 +3,6 @@ package br.edu.suauniversidade.fabrica.gerenciadorprojetos.DTO.ProjetoDTO;
 import java.time.LocalDate;
 import java.util.List;
 
-import br.edu.suauniversidade.fabrica.gerenciadorprojetos.DTO.AlunosDTO.dtoAlunoRA;
 
 public class dtoProjetoAtulizacaoInfomacao {
  private String nomeDoProjeto;
@@ -11,8 +10,8 @@ public class dtoProjetoAtulizacaoInfomacao {
  private String areaDeConhecimento;
  private LocalDate dataDeInicioDoProjeto;
  private LocalDate dataDoFimDoProjeto;
- // private List<dtoAlunoRA> alunosParticipantesDoProjeto;
- private String profesorOrientador;
+ private List<String> alunosParticipantesDoProjeto;
+ private List<String> profesorOrientador;
  private String linkGit;
  private String linkImage;
 
@@ -20,14 +19,14 @@ public class dtoProjetoAtulizacaoInfomacao {
 
  }
  public dtoProjetoAtulizacaoInfomacao(String nomeDoProjeto, String descricaoDoProjeto, String areaDeConhecimento,
-   LocalDate dataDeInicioDoProjeto, LocalDate dataDoFimDoProjeto, List<dtoAlunoRA> alunosParticipantesDoProjeto,
-   String profesorOrientador, String linkGit, String linkImage) {
+   LocalDate dataDeInicioDoProjeto, LocalDate dataDoFimDoProjeto, List<String> alunosParticipantesDoProjeto,
+   List<String> profesorOrientador, String linkGit, String linkImage) {
   this.nomeDoProjeto = nomeDoProjeto;
   this.descricaoDoProjeto = descricaoDoProjeto;
   this.areaDeConhecimento = areaDeConhecimento;
   this.dataDeInicioDoProjeto = dataDeInicioDoProjeto;
   this.dataDoFimDoProjeto = dataDoFimDoProjeto;
-  // this.alunosParticipantesDoProjeto = alunosParticipantesDoProjeto;
+  this.alunosParticipantesDoProjeto = alunosParticipantesDoProjeto;
   this.profesorOrientador = profesorOrientador;
   this.linkGit = linkGit;
   this.linkImage = linkImage;
@@ -73,19 +72,19 @@ public class dtoProjetoAtulizacaoInfomacao {
   this.dataDoFimDoProjeto = dataDoFimDoProjeto;
  }
 
- // public List<dtoAlunoRA> getAlunosParticipantesDoProjeto() {
- //  return alunosParticipantesDoProjeto;
- // }
+ public List<String> getAlunosParticipantesDoProjeto() {
+  return alunosParticipantesDoProjeto;
+ }
 
- // public void setAlunosParticipantesDoProjeto(List<dtoAlunoRA> alunosParticipantesDoProjeto) {
- //  this.alunosParticipantesDoProjeto = alunosParticipantesDoProjeto;
- // }
+ public void setAlunosParticipantesDoProjeto(List<String> alunosParticipantesDoProjeto) {
+  this.alunosParticipantesDoProjeto = alunosParticipantesDoProjeto;
+ }
 
- public String getProfesorOrientador() {
+ public List<String> getProfesorOrientador() {
   return profesorOrientador;
  }
 
- public void setProfesorOrientador(String profesorOrientador) {
+ public void setProfesorOrientador(List<String> profesorOrientador) {
   this.profesorOrientador = profesorOrientador;
  }
 

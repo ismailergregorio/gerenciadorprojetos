@@ -6,7 +6,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import jakarta.persistence.CascadeType;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -28,7 +28,7 @@ public class ClassProjetos {
   private Long id;
 
   @Column(unique = true)
-  private String identicadorProjetos;
+  private String codigoProjeto;
 
   @Column(unique = true, nullable = false)
   private String nomeDoProjeto;
@@ -55,15 +55,11 @@ public class ClassProjetos {
   private String linkGit;
   private String linkImage;
 
-  public ClassProjetos() {
-
-  }
-
-  public ClassProjetos(Long id, String identicadorProjetos, String nomeDoProjeto, String descricaoDoProjeto,
+  public ClassProjetos(Long id, String codigoProjeto, String nomeDoProjeto, String descricaoDoProjeto,
       String areaDeConhecimento, LocalDate dataDeInicioDoProjeto, LocalDate dataDoFimDoProjeto,
       List<ClassAlunos> alunosParticipantesDoProjeto, List<ClassGestores> profesorOrientador, String linkGit, String linkImage) {
     this.id = id;
-    this.identicadorProjetos = identicadorProjetos;
+    this.codigoProjeto = codigoProjeto;
     this.nomeDoProjeto = nomeDoProjeto;
     this.descricaoDoProjeto = descricaoDoProjeto;
     this.areaDeConhecimento = areaDeConhecimento;
@@ -79,7 +75,7 @@ public class ClassProjetos {
   public void geraCodigoProjeto() {
     String prefixo = "PROJ";
     int numero = (int) (Math.random() * 9000) + 1000;
-    this.identicadorProjetos = prefixo + numero;
+    this.codigoProjeto = prefixo + numero;
   }
 
   public Long getId() {
@@ -90,12 +86,12 @@ public class ClassProjetos {
     this.id = id;
   }
 
-  public String getIdenticadorProjetos() {
-    return identicadorProjetos;
+  public String getCodigoProjeto() {
+    return codigoProjeto;
   }
 
-  public void setIdenticadorProjetos(String identicadorProjetos) {
-    this.identicadorProjetos = identicadorProjetos;
+  public void setCodigoProjeto(String codigoProjeto) {
+    this.codigoProjeto = codigoProjeto;
   }
 
   public String getNomeDoProjeto() {
@@ -144,7 +140,6 @@ public class ClassProjetos {
 
   public void setAlunosParticipantesDoProjeto(List<ClassAlunos> alunosParticipantesDoProjeto) {
     this.alunosParticipantesDoProjeto = alunosParticipantesDoProjeto;
-
   }
 
   public List<ClassGestores> getProfesorOrientador() {
@@ -169,5 +164,9 @@ public class ClassProjetos {
 
   public void setLinkImage(String linkImage) {
     this.linkImage = linkImage;
+  }
+
+  public ClassProjetos() {
+
   }
 }
