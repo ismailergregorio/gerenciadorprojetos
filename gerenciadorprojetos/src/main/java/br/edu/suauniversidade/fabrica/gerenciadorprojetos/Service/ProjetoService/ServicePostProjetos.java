@@ -70,19 +70,20 @@ public class ServicePostProjetos {
   novoProjeto.setLinkGit(dto.getLinkGit());
   novoProjeto.setLinkImage(dto.getLinkImage());
 
-  repositoryProjetos.save(novoProjeto);
+  ClassProjetos projetosavo = repositoryProjetos.save(novoProjeto);
 
   dtoProjetoResp resProjeto = new dtoProjetoResp();
 
-  resProjeto.setNomeDoProjeto(dto.getNomeDoProjeto());
-  resProjeto.setDescricaoDoProjeto(dto.getDescricaoDoProjeto());
-  resProjeto.setAreaDeConhecimento(dto.getAreaDeConhecimento());
-  resProjeto.setDataDeInicioDoProjeto(dto.getDataDeInicioDoProjeto());
-  resProjeto.setDataDoFimDoProjeto(dto.getDataDoFimDoProjeto());
+  resProjeto.setCodigoProjeto(projetosavo.getCodigoProjeto());
+  resProjeto.setNomeDoProjeto(projetosavo.getNomeDoProjeto());
+  resProjeto.setDescricaoDoProjeto(projetosavo.getDescricaoDoProjeto());
+  resProjeto.setAreaDeConhecimento(projetosavo.getAreaDeConhecimento());
+  resProjeto.setDataDeInicioDoProjeto(projetosavo.getDataDeInicioDoProjeto());
+  resProjeto.setDataDoFimDoProjeto(projetosavo.getDataDoFimDoProjeto());
   resProjeto.setAlunosParticipantesDoProjeto(dto.getAlunosParticipantesDoProjeto());
   resProjeto.setProfesorOrientador(dto.getProfesorOrientador());
-  resProjeto.setLinkGit(dto.getLinkGit());
-  resProjeto.setLinkImage(dto.getLinkImage());
+  resProjeto.setLinkGit(projetosavo.getLinkGit());
+  resProjeto.setLinkImage(projetosavo.getLinkImage());
 
   return ResponseEntity.ok(resProjeto);
  }

@@ -1,5 +1,6 @@
 package br.edu.suauniversidade.fabrica.gerenciadorprojetos.DTO.AlunosDTO;
 
+
 import br.edu.suauniversidade.fabrica.gerenciadorprojetos.Model.ClassAlunos;
 // import br.edu.suauniversidade.fabrica.gerenciadorprojetos.Model.ClassProjetos;
 
@@ -12,6 +13,7 @@ public class dtoAlunosRespost {
  private String curso;
  private String projetoSelecionado;
  private String motivoDaInscricao;
+//  private boolean stadoDaInscricao;
 
  public dtoAlunosRespost(){
 
@@ -22,7 +24,11 @@ public class dtoAlunosRespost {
   this.emailInstitucional = classAlunos.getEmailInstitucional();
   this.nome = classAlunos.getNome();
   this.curso = classAlunos.getCurso();
-  this.projetoSelecionado = classAlunos.getProjetoSelecionado().getCodigoProjeto();
+  if (classAlunos.getProjetoSelecionado() != null) {
+  this.projetoSelecionado = classAlunos.getProjetoSelecionado().getCodigoProjeto();}
+  else{
+    this.projetoSelecionado = null;
+  }
   this.motivoDaInscricao = classAlunos.getMotivoDaInscricao();
  }
 

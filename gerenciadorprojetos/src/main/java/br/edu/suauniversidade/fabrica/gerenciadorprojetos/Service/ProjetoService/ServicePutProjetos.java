@@ -39,20 +39,22 @@ public class ServicePutProjetos {
     for(String ra : objDto.getAlunosParticipantesDoProjeto()){
 
      //Verifica se Aluno existe
-     Optional<ClassAlunos> aluno = repositoryAlunos.findByRa(ra);
-     if(aluno.isEmpty()){
+     Optional<ClassAlunos> alunoExiste = repositoryAlunos.findByRa(ra);
+     if(alunoExiste.isEmpty()){
       ResponseEntity.badRequest().build();
      }
 
-      
-
+     if(repositoryAlunos.existsByRaAndProjetoSelecionadoIsNotNull(ra)){
+      listaAlunos.add(ra);
+     }
     }
   }
 
-  ClassProjetos itenParaAtulizar =  new ClassProjetos();
+  dtoProjetoAtulizacaoInfomacao respostaDTO = new dtoProjetoAtulizacaoInfomacao();
 
+  respostaDTO.setNomeDoProjeto(objDto.getNomeDoProjeto());
+  respostaDTO.setAlunosParticipantesDoProjeto(listaAlunos);
 
-  dtoProjetoAtulizacaoInfomacao respostaDTO =  new dtoProjetoAtulizacaoInfomacao();
   return ResponseEntity.ok(respostaDTO);
  }
 }

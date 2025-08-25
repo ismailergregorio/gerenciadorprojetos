@@ -30,6 +30,7 @@ public class ClassAlunos {
 
  @Column(nullable = false)
  private String nome;
+
  @Column(nullable = false)
  private String curso;
 
@@ -44,26 +45,22 @@ public class ClassAlunos {
  @Column(nullable = false,columnDefinition = "TEXT")
  private LocalDate dataInscricao;
 
- public ClassAlunos(){
 
- }
-
- public ClassAlunos(Long id, String ra, String emailInstitucional, String nome, String curso, ClassProjetos projetoSelecionado,
-   String motivoDaInscricao, LocalDate dataInscricao) {
-
-  this.id = id;
-  this.ra = ra;
-  this.emailInstitucional = emailInstitucional;
-  this.nome = nome;
-  this.curso = curso;
-  this.projetoSelecionado = projetoSelecionado;
-  this.motivoDaInscricao = motivoDaInscricao;
-  this.dataInscricao = dataInscricao;
- }
+ public ClassAlunos(Long id, String ra, String emailInstitucional, String nome, String curso,
+        ClassProjetos projetoSelecionado, String motivoDaInscricao, LocalDate dataInscricao) {
+    this.id = id;
+    this.ra = ra;
+    this.emailInstitucional = emailInstitucional;
+    this.nome = nome;
+    this.curso = curso;
+    this.projetoSelecionado = projetoSelecionado;
+    this.motivoDaInscricao = motivoDaInscricao;
+    this.dataInscricao = dataInscricao;
+}
 
  public Long getId() {
   return id;
- }
+}
 
  public void setId(Long id) {
   this.id = id;
@@ -124,4 +121,9 @@ public class ClassAlunos {
  public void setDataInscricao(LocalDate dataInscricao) {
   this.dataInscricao = dataInscricao;
  }
+
+ public ClassAlunos(){
+
+ }
+
 }
