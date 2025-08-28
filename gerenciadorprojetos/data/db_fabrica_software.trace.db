@@ -1,0 +1,3 @@
+2025-08-28 17:46:11.391867-03:00 jdbc[123]: exception
+org.h2.jdbc.JdbcSQLDataException: Value too long for column "LINK_IMAGE CHARACTER VARYING(255)": "'https://static.vecteezy.com/ti/fotos-gratis/t1/23056329-programador-pessoas-tra... (295)"; SQL statement:
+insert into db_projetos (area_de_conhecimento,codigo_projeto,data_de_inicio_do_projeto,data_do_fim_do_projeto,descricao_do_projeto,link_git,link_image,nome_do_projeto,id) values (?,?,?,?,?,?,?,?,default) [22001-232]
