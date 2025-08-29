@@ -14,6 +14,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
@@ -48,6 +49,7 @@ public class ClassProjetos {
 
   @OneToMany(mappedBy = "projetoSelecionado" ,orphanRemoval = true)
   @JsonManagedReference
+  @Column(nullable = true)
   private List<ClassAlunos> alunosParticipantesDoProjeto = new ArrayList<>();
 
   @ManyToMany(mappedBy = "projetos")

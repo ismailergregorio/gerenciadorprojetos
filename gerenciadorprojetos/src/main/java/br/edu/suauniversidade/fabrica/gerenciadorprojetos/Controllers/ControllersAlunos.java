@@ -38,13 +38,17 @@ public class ControllersAlunos {
     public ResponseEntity<dtoAlunosRespost> postAlunos(@RequestBody dtoAlunosPost dto) {
         // TODO: process POST request
         ClassAlunos aluno = new ClassAlunos();
-        Optional<ClassProjetos> projeto;
+        ClassProjetos projetoParaSalvar = new ClassProjetos();
 
         if (dto.getProjetoSelecionado() != null) {
-            projeto = repositoryProjetos.findByCodigoProjeto(dto.getProjetoSelecionado());
-            aluno.setProjetoSelecionado(projeto.get());
+            Optional<ClassProjetos> projeto = repositoryProjetos.findByCodigoProjeto(dto.getProjetoSelecionado());
+            projetoParaSalvar = projeto.get();
+
+            if (projeto.isPresent()) {
+                aluno.setProjetoSelecionado(projetoParaSalvar);
+            }
         } else {
-            dto.setProjetoSelecionado(null);
+            aluno.setProjetoSelecionado(null);
         }
 
         aluno.setRa(dto.getRa());
@@ -62,7 +66,7 @@ public class ControllersAlunos {
         dtoResposta.setNome(salvo.getNome());
         dtoResposta.setEmailInstitucional(salvo.getEmailInstitucional());
         dtoResposta.setCurso(salvo.getCurso());
-        dtoResposta.setProjetoSelecionado((salvo.getProjetoSelecionado().getCodigoProjeto() != null) ? salvo.getProjetoSelecionado().getCodigoProjeto() : null);
+        dtoResposta.setProjetoSelecionado(aluno.getProjetoSelecionado().getNomeDoProjeto());
         dtoResposta.setMotivoDaInscricao(salvo.getMotivoDaInscricao());
 
         return ResponseEntity.ok(dtoResposta);

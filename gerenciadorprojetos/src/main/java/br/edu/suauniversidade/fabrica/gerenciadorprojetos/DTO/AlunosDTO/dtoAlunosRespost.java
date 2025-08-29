@@ -13,7 +13,15 @@ public class dtoAlunosRespost {
  private String curso;
  private String projetoSelecionado;
  private String motivoDaInscricao;
-//  private boolean stadoDaInscricao;
+ private boolean status;
+
+ public boolean isStatus() {
+  return status;
+}
+
+ public void setStatus(boolean status) {
+  this.status = status;
+ }
 
  public dtoAlunosRespost(){
 
@@ -30,6 +38,7 @@ public class dtoAlunosRespost {
     this.projetoSelecionado = null;
   }
   this.motivoDaInscricao = classAlunos.getMotivoDaInscricao();
+  this.status = classAlunos.isStatus();
  }
 
  public String getRa() {
