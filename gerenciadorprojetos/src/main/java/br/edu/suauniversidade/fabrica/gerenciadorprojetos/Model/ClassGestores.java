@@ -34,7 +34,7 @@ public class ClassGestores {
     @Column(columnDefinition = "TEXT" ,nullable = false)
     private String descricao;
 
-    @Column(nullable = false, unique = true,columnDefinition = "TEXT")
+    @Column(nullable = false, unique = true, columnDefinition = "TEXT")
     private String linkImagenGestor;
 
     @ManyToMany

@@ -15,12 +15,7 @@ public class dtoGestoresRespost {
     private String linkImagenGestor;
     private List<String> projetos;
 
-    public List<String> getProjetos() {
-        return projetos;
-    }
-
-    public void setProjetos(List<String> projetos) {
-        this.projetos = projetos;
+    public dtoGestoresRespost() {
     }
 
     public dtoGestoresRespost(String codigoGestor, String name, String descricao, String cursoResposavel,
@@ -31,9 +26,6 @@ public class dtoGestoresRespost {
         this.cursoResposavel = cursoResposavel;
         this.linkImagenGestor = linkImagenGestor;
         this.projetos = projetos;
-    }
-
-    public dtoGestoresRespost() {
     }
 
     public dtoGestoresRespost(ClassGestores gestor) {
@@ -86,4 +78,13 @@ public class dtoGestoresRespost {
     public void setLinkImagenGestor(String linkImagenGestor) {
         this.linkImagenGestor = linkImagenGestor;
     }
+
+    public List<String> getProjetos() {
+        return projetos;
+    }
+
+    public void setProjetos(List<String> projetos) {
+        this.projetos = projetos;
+    }
+
 }

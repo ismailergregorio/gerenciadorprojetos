@@ -35,8 +35,13 @@ public class ControllersGestores {
     RepositoryProjetos repositoryProjetos;
 
     @PostMapping("/addgestores")
-    public ResponseEntity<dtoGestoresRespost> addGestores(dtoGestoresPost dtogestor) {
+    public ResponseEntity<dtoGestoresRespost> addGestores(@RequestBody dtoGestoresPost dtogestor) {
         ClassGestores gestor = new ClassGestores();
+
+        System.out.println("Recebido do front: -----------" + dtogestor.getName());
+        System.out.println("Recebido do front: -----------" + dtogestor.getCursoResposavel());
+        System.out.println("Recebido do front: -----------" + dtogestor.getDescricao());
+        System.out.println("Recebido do front: -----------" + dtogestor.getLinkImagenGestor());
 
         gestor.setName(dtogestor.getName());
         gestor.setCursoResposavel(dtogestor.getCursoResposavel());
