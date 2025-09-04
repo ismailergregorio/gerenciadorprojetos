@@ -25,8 +25,6 @@ import br.edu.suauniversidade.fabrica.gerenciadorprojetos.Repository.RepositoryG
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-
-
 @RestController
 @RequestMapping("/gestores")
 @CrossOrigin(origins = "*")
@@ -43,22 +41,25 @@ public class ControllersGestores {
 
         List<ClassProjetos> listaDeProjetos = new ArrayList<>();
 
-        for(String projetos : dtogestor.getProjetos()){
-            Optional<ClassProjetos> projeto = repositoryProjetos.findByCodigoProjeto(projetos);
+        if (dtogestor.getProjetos() != null) {
+            for (String projetos : dtogestor.getProjetos()) {
+                Optional<ClassProjetos> projeto = repositoryProjetos.findByCodigoProjeto(projetos);
 
-            if(projeto.isPresent()){
-                listaDeProjetos.add(projeto.get());
+                if (projeto.isPresent()) {
+                    listaDeProjetos.add(projeto.get());
+                } else {
+                    return ResponseEntity.badRequest().build();
+                }
             }
-            else{
-                return ResponseEntity.badRequest().build();
-            }
+        }else{
+            return ResponseEntity.badRequest().build();
         }
 
         gestor.setName(dtogestor.getName());
         gestor.setCursoResposavel(dtogestor.getCursoResposavel());
         gestor.setDescricao(dtogestor.getDescricao());
         gestor.setLinkImagenGestor(dtogestor.getLinkImagenGestor());
-        gestor.setProjetos(listaDeProjetos);
+        gestor.setProjetos((listaDeProjetos != null) ? listaDeProjetos : null);
 
         repositoryGestores.save(gestor);
 
@@ -69,21 +70,25 @@ public class ControllersGestores {
         dtoreposta.setCursoResposavel(gestor.getCursoResposavel());
         dtoreposta.setDescricao(gestor.getDescricao());
         dtoreposta.setLinkImagenGestor(gestor.getLinkImagenGestor());
+        dtoreposta.setProjetos(listaDeProjetos.stream()
+                                        .map(ClassProjetos::getCodigoProjeto)
+                                        .toList());
 
         return ResponseEntity.ok(dtoreposta);
     }
 
     @GetMapping("/gestores")
-    public List<dtoGestoresRespost> GetGestores(){
+    public List<dtoGestoresRespost> GetGestores() {
         List<ClassGestores> gestores = repositoryGestores.findAll();
 
         return gestores.stream().map(dtoGestoresRespost::new).toList();
     }
+
     @GetMapping("/gestore/{CodigoGestor}")
     public ResponseEntity<dtoGestoresRespost> getMethodName(@PathVariable String CodigoGestor) {
-        Optional<ClassGestores> gestoresselecionados =  repositoryGestores.findByCodigoGestor(CodigoGestor);
+        Optional<ClassGestores> gestoresselecionados = repositoryGestores.findByCodigoGestor(CodigoGestor);
 
-        if(gestoresselecionados.isEmpty()){
+        if (gestoresselecionados.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
@@ -99,12 +104,14 @@ public class ControllersGestores {
 
         return ResponseEntity.ok(dtoRes);
     }
-    @PutMapping("/gestore/{CodigoGestor}")
-    public ResponseEntity<dtoGestoresRespost> putGestores(@PathVariable String CodigoGestor, @RequestBody dtoGestoresPost gestorAtulisado) {
-        //TODO: process PUT request
-        Optional<ClassGestores> itenOptional =  repositoryGestores.findByCodigoGestor(CodigoGestor);
 
-        if(itenOptional.isEmpty()){
+    @PutMapping("/gestore/{CodigoGestor}")
+    public ResponseEntity<dtoGestoresRespost> putGestores(@PathVariable String CodigoGestor,
+            @RequestBody dtoGestoresPost gestorAtulisado) {
+        // TODO: process PUT request
+        Optional<ClassGestores> itenOptional = repositoryGestores.findByCodigoGestor(CodigoGestor);
+
+        if (itenOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
@@ -127,12 +134,13 @@ public class ControllersGestores {
 
         return ResponseEntity.ok(dtoRes);
     }
+
     @DeleteMapping("/gestore/{CodigoGestor}")
-    public ResponseEntity<dtoGestoresRespost> deleteGestores(@PathVariable String CodigoGestor){
+    public ResponseEntity<dtoGestoresRespost> deleteGestores(@PathVariable String CodigoGestor) {
 
-        Optional<ClassGestores> itenOptional =  repositoryGestores.findByCodigoGestor(CodigoGestor);
+        Optional<ClassGestores> itenOptional = repositoryGestores.findByCodigoGestor(CodigoGestor);
 
-        if(itenOptional.isEmpty()){
+        if (itenOptional.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
@@ -149,7 +157,6 @@ public class ControllersGestores {
         repositoryGestores.delete(gestorDeletado);
 
         return ResponseEntity.ok(dtoRes);
-    } 
-    
+    }
 
 }
