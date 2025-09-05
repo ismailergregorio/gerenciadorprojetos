@@ -50,8 +50,6 @@ public class ControllersGestores {
                     return ResponseEntity.badRequest().build();
                 }
             }
-        }else{
-            return ResponseEntity.badRequest().build();
         }
 
         gestor.setName(dtogestor.getName());
@@ -100,6 +98,7 @@ public class ControllersGestores {
         dtoRes.setCursoResposavel(gestor.getCursoResposavel());
         dtoRes.setDescricao(gestor.getDescricao());
         dtoRes.setLinkImagenGestor(gestor.getLinkImagenGestor());
+        dtoRes.setProjetos(gestor.getProjetos().stream().map(ClassProjetos :: getCodigoProjeto).toList());
 
         return ResponseEntity.ok(dtoRes);
     }
@@ -114,12 +113,27 @@ public class ControllersGestores {
             return ResponseEntity.notFound().build();
         }
 
+        List<ClassProjetos> listaAtualisada = new ArrayList<>();
+
+        if(gestorAtulisado.getProjetos() != null){
+            for(String codigoProjeto : gestorAtulisado.getProjetos()){
+                Optional<ClassProjetos> progetoselecionado = repositoryProjetos.findByCodigoProjeto(codigoProjeto);
+
+                if(progetoselecionado.isPresent()){
+                    listaAtualisada.add(progetoselecionado.get());
+                }else{
+                    return ResponseEntity.notFound().build();
+                }
+            }
+        }
+
         ClassGestores gestor = itenOptional.get();
 
         gestor.setName(gestorAtulisado.getName());
         gestor.setCursoResposavel(gestorAtulisado.getCursoResposavel());
         gestor.setDescricao(gestorAtulisado.getDescricao());
         gestor.setLinkImagenGestor(gestorAtulisado.getLinkImagenGestor());
+        gestor.setProjetos((listaAtualisada != null) ? listaAtualisada : null);
 
         repositoryGestores.save(gestor);
 
@@ -130,6 +144,8 @@ public class ControllersGestores {
         dtoRes.setCursoResposavel(gestor.getCursoResposavel());
         dtoRes.setDescricao(gestor.getDescricao());
         dtoRes.setLinkImagenGestor(gestor.getLinkImagenGestor());
+        dtoRes.setProjetos((gestor.getProjetos() != null)?
+        gestor.getProjetos().stream().map(ClassProjetos :: getCodigoProjeto).toList() : null);
 
         return ResponseEntity.ok(dtoRes);
     }
@@ -152,6 +168,8 @@ public class ControllersGestores {
         dtoRes.setCursoResposavel(gestorDeletado.getCursoResposavel());
         dtoRes.setDescricao(gestorDeletado.getDescricao());
         dtoRes.setLinkImagenGestor(gestorDeletado.getLinkImagenGestor());
+        dtoRes.setProjetos((gestorDeletado.getProjetos() != null)?
+        gestorDeletado.getProjetos().stream().map(ClassProjetos :: getCodigoProjeto).toList() : null);
 
         repositoryGestores.delete(gestorDeletado);
 
