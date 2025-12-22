@@ -19,34 +19,46 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
- @Autowired
- private CustomUserDetailsService userDetailsService;
+  @Autowired
+  private CustomUserDetailsService userDetailsService;
 
- @Autowired
- SecurityFilter securityFilter;
+  @Autowired
+  SecurityFilter securityFilter;
 
- @Bean
- public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-  http
-    .csrf(csrf -> csrf.disable())
-    .cors(Customizer.withDefaults())
-    .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-    .authorizeHttpRequests(authorize -> authorize
-      .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-      .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
-      .anyRequest().authenticated())
-    .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
-  return http.build();
- }
+  @Bean
+  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    http
+        .csrf(csrf -> csrf.disable())
+        .cors(Customizer.withDefaults())
+        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .authorizeHttpRequests(authorize -> authorize
 
- @Bean
- public PasswordEncoder passwordEncoder() {
-  return new BCryptPasswordEncoder();
- }
+            // 🔓 SWAGGER (OBRIGATÓRIO)
+            .requestMatchers(
+                "/swagger-ui.html",
+                "/swagger-ui/**",
+                "/v3/api-docs/**")
+            .permitAll()
 
- @Bean
- public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
-   throws Exception {
-  return authenticationConfiguration.getAuthenticationManager();
- }
+            // 🔓 AUTH
+            .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+            .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
+
+            // 🔐 RESTANTE
+            .anyRequest().authenticated())
+        .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
+
+    return http.build();
+  }
+
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
+
+  @Bean
+  public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+      throws Exception {
+    return authenticationConfiguration.getAuthenticationManager();
+  }
 }

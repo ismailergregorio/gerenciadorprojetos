@@ -18,8 +18,6 @@ import com.example.API_Fabrica_Software.Repository.RepositoryUser;
 import org.springframework.web.bind.annotation.RequestBody;
 @RestController
 @RequestMapping("/auth")
-@CrossOrigin(origins = "http://localhost:3000")
-
 public class AuthController {
 
   @Autowired
