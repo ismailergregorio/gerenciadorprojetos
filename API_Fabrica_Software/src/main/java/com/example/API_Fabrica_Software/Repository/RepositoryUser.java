@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.example.API_Fabrica_Software.Model.ClassUsers;
 
-public interface RepositoryUser extends JpaRepository<ClassUsers,String>{
+public interface RepositoryUser extends JpaRepository<ClassUsers,Long>{
  Optional<ClassUsers> findByEmail(String email);
 }

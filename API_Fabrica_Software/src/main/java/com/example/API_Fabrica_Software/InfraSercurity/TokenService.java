@@ -13,7 +13,7 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.example.API_Fabrica_Software.Model.ClassUsers;
 
 @Service
-public class TokenService {
+public class  TokenService {
  @Value("${api.security.token.secret}")
  private String secret;
 
