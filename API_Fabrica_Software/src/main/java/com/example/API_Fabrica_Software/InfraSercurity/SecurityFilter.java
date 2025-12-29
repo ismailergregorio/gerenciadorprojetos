@@ -15,28 +15,33 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.Optional;
 
 @Component
 public class SecurityFilter extends OncePerRequestFilter {
 
     @Autowired
-    TokenService tokenService;
+    private TokenService tokenService;
 
     @Autowired
-    RepositoryUser userRepository;
+    private RepositoryUser userRepository;
 
     @Override
     protected void doFilterInternal(
             HttpServletRequest request,
             HttpServletResponse response,
-            FilterChain filterChain) throws ServletException, IOException {
+            FilterChain filterChain
+    ) throws ServletException, IOException {
 
         String path = request.getServletPath();
 
-        // 🔥 IGNORA rotas públicas
-        if (path.equals("/auth/login") ||
-                path.equals("/auth/register") ||
-                request.getMethod().equals("OPTIONS")) {
+        // 🔓 Ignora rotas públicas
+        if (path.startsWith("/auth/login") ||
+            path.startsWith("/auth/register") ||
+            path.startsWith("/swagger-ui") ||
+            path.startsWith("/v3/api-docs") ||
+            request.getMethod().equals("OPTIONS")) {
+
             filterChain.doFilter(request, response);
             return;
         }
@@ -47,26 +52,36 @@ public class SecurityFilter extends OncePerRequestFilter {
             String login = tokenService.validateToken(token);
 
             if (login != null) {
-                ClassUsers user = userRepository
-                        .findByEmail(login)
-                        .orElseThrow(() -> new RuntimeException("User not found"));
+                Optional<ClassUsers> optionalUser =
+                        userRepository.findByEmail(login);
 
-                var authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
+                if (optionalUser.isPresent()) {
+                    ClassUsers user = optionalUser.get();
 
-                var authentication = new UsernamePasswordAuthenticationToken(user, null, authorities);
+                    var authorities = Collections.singletonList(
+                            new SimpleGrantedAuthority("ROLE_USER")
+                    );
 
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+                    var authentication =
+                            new UsernamePasswordAuthenticationToken(
+                                    user,
+                                    null,
+                                    authorities
+                            );
+
+                    SecurityContextHolder
+                            .getContext()
+                            .setAuthentication(authentication);
+                }
             }
         }
 
         filterChain.doFilter(request, response);
     }
-    
 
     private String recoverToken(HttpServletRequest request) {
         String authHeader = request.getHeader("Authorization");
-        if (authHeader == null)
-            return null;
+        if (authHeader == null) return null;
         return authHeader.replace("Bearer ", "");
     }
 }

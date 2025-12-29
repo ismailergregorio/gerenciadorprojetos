@@ -1,9 +1,10 @@
 package com.example.API_Fabrica_Software.Controllers;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,11 +12,15 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.API_Fabrica_Software.DTO.authiction.LoginRequestDTO;
 import com.example.API_Fabrica_Software.DTO.authiction.RegisterRequestDTO;
 import com.example.API_Fabrica_Software.DTO.authiction.ResponseDTO;
+import com.example.API_Fabrica_Software.DTO.authiction.updateDTO;
 import com.example.API_Fabrica_Software.InfraSercurity.TokenService;
 import com.example.API_Fabrica_Software.Model.ClassUsers;
 import com.example.API_Fabrica_Software.Repository.RepositoryUser;
 
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -45,9 +50,6 @@ public class AuthController {
 
   @PostMapping("/register")
   public ResponseEntity<?> register(@RequestBody RegisterRequestDTO body) {
-    System.out.println("NAME: " + body.name());
-    System.out.println("EMAIL: " + body.email());
-    System.out.println("PASSWORD: " + body.password());
 
     if (repository.findByEmail(body.email()).isPresent()) {
       return ResponseEntity.badRequest().body("Usuário já existe");
@@ -63,5 +65,29 @@ public class AuthController {
 
     String token = tokenService.generateToken(newUser);
     return ResponseEntity.ok(new ResponseDTO(newUser.getNome(), token));
+  }
+
+  @PutMapping("update/{id}")
+  public ResponseEntity<?> updeteUser(@PathVariable Long id, @RequestBody updateDTO entity) {
+    Optional<ClassUsers> usuarioSelecionado = repository.findById(id);
+
+    if (!usuarioSelecionado.isPresent()) {
+      return ResponseEntity.badRequest().body("Usuario Não existe");
+    }
+
+    ClassUsers usuario = usuarioSelecionado.get();
+
+    if(!passwordEncoder.matches(entity.password(), usuario.getPassword())) {
+      return ResponseEntity.badRequest().body("Senhas digitadas não coincidem");
+    }
+
+    usuario.setNome(entity.nome());
+    usuario.setEmail(entity.email());
+    usuario.setPassword(passwordEncoder.encode(entity.passwordAlterada()));
+    usuario.setRoles("new_list");
+
+    repository.save(usuario);
+
+    return ResponseEntity.ok(entity);
   }
 }
