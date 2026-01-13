@@ -1,13 +1,21 @@
 package br.edu.suauniversidade.fabrica.gerenciadorprojetos.Model;
 
+import java.security.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.TimeZoneStorage;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -16,7 +24,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 //CLASSE DE INSTANCIA DE ALUNOS E A CRIAÇÃO DE TABELA DE ALUNOS
-
+@EntityListeners(AuditingEntityListener.class)
 @Entity
 @Table(name = "db_alunos")
 public class ClassAlunos {
@@ -49,6 +57,14 @@ public class ClassAlunos {
 
   @ColumnDefault("false")
   private boolean status;
+
+  @CreatedDate
+  private LocalDateTime dataDeCriacao;
+
+  @LastModifiedDate
+  private LocalDateTime Timestamp;
+
+  private Long idUsuario;
 
   public ClassAlunos() {
 
