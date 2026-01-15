@@ -18,7 +18,7 @@ public class dtoConfigCarrocelResp {
     }
 
     public dtoConfigCarrocelResp(ClassCarrocel carrocel) {
-        this.codigoImagem = carrocel.getcodigoImagem();
+        this.codigoImagem = carrocel.getCodigoImagem();
         this.linkImagenCarrocel =  carrocel.getLinkImagenCarrocel();
         this.imagenAtivadaDesativada = carrocel.getImagenAtivadaDesativada();
     }

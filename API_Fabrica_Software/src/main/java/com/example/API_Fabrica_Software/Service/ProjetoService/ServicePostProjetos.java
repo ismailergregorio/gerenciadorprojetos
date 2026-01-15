@@ -57,7 +57,7 @@ public class ServicePostProjetos {
    }
   }
 
-  ClassProjetos novoProjeto = new ClassProjetos();
+  ClassProjetos novoProjeto = new ClassProjetos() ;
   novoProjeto.setNomeDoProjeto(dto.getNomeDoProjeto());
   novoProjeto.setDescricaoDoProjeto(dto.getDescricaoDoProjeto());
   novoProjeto.setAreaDeConhecimento(dto.getAreaDeConhecimento());
@@ -76,7 +76,6 @@ public class ServicePostProjetos {
    ClassAlunos atulizarProjetoAluno = aluno.get();
    atulizarProjetoAluno.setProjetoSelecionado(projetosavo);
    repositoryAlunos.save(atulizarProjetoAluno);
-   System.out.println("Salvo Aluno");
 
   }
 
@@ -87,7 +86,7 @@ public class ServicePostProjetos {
     listaProjetos.add(projetosavo);
     atualizarGestor.setProjetos(listaProjetos);
     repositoryGestores.save(atualizarGestor);
-    System.out.println("Salvo Gestor");
+
    }
 
   dtoProjetoResp resProjeto = new dtoProjetoResp();

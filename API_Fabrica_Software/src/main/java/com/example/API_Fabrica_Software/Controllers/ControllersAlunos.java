@@ -27,7 +27,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 @RestController
 @RequestMapping("/alunos")
 @CrossOrigin(origins = "*")
-
 public class ControllersAlunos {
     @Autowired
     RepositoryAlunos repositoryAlunos;
@@ -51,7 +50,7 @@ public class ControllersAlunos {
         } else {
             aluno.setProjetoSelecionado(null);
         }
-        System.out.println(aluno.getProjetoSelecionado());
+       
 
         aluno.setRa(dto.getRa());
         aluno.setNome(dto.getNome());

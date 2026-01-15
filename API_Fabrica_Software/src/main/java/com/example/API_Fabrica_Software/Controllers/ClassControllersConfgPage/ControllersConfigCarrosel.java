@@ -43,7 +43,7 @@ public class ControllersConfigCarrosel {
 
         dtoConfigCarrocelResp dtoRepost =  new dtoConfigCarrocelResp();
 
-        dtoRepost.setcodigoImagem(imagem.getcodigoImagem());
+        dtoRepost.setcodigoImagem(imagem.getCodigoImagem());
         dtoRepost.setLinkImagenCarrocel(imagem.getLinkImagenCarrocel());
         dtoRepost.setImagenAtivadaDesativada(imagem.getImagenAtivadaDesativada());
          

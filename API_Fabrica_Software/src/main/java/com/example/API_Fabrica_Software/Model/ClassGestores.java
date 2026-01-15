@@ -14,8 +14,10 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
+import lombok.Data;
 
 @Entity
+@Data
 @Table(name = "db_gestores")
 public class ClassGestores {
     @Id
@@ -68,62 +70,5 @@ public class ClassGestores {
         String prefixo = "GEST";
         int numero =  (int) (Math.random() * 9000) + 1000;
         this.codigoGestor = prefixo + numero;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getCodigoGestor() {
-        return codigoGestor;
-    }
-
-    public void setCodigoGestor(String codigoGestor) {
-        this.codigoGestor = codigoGestor;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getCursoResposavel() {
-        return cursoResposavel;
-    }
-
-    public void setCursoResposavel(String cursoResposavel) {
-        this.cursoResposavel = cursoResposavel;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
-    public String getLinkImagenGestor() {
-        return linkImagenGestor;
-    }
-
-    public void setLinkImagenGestor(String linkImagenGestor) {
-        this.linkImagenGestor = linkImagenGestor;
-
-    }
-
-    public List<ClassProjetos> getProjetos() {
-        return projetos;
-    }
-
-    public void setProjetos(List<ClassProjetos> projetos) {
-        this.projetos = projetos;
     }
 }

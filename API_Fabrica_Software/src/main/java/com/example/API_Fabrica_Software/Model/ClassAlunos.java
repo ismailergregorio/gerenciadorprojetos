@@ -69,9 +69,4 @@ public class ClassAlunos {
   @Column(name = "idusuario")
   private Long idUsuario;
 
-
-  public ClassAlunos() {
-
-  }
-
 }

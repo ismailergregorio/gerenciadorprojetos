@@ -18,10 +18,16 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 //CLASSE DE INSTANCIA DE PROJETOS E A CRIAÇÃO DE TABELA DE PROJETOS
 
 @Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "db_projetos")
 public class ClassProjetos {
 
@@ -58,118 +64,10 @@ public class ClassProjetos {
   private String linkGit;
   private String linkImage;
 
-  public ClassProjetos(Long id, String codigoProjeto, String nomeDoProjeto, String descricaoDoProjeto,
-      String areaDeConhecimento, LocalDate dataDeInicioDoProjeto, LocalDate dataDoFimDoProjeto,
-      List<ClassAlunos> alunosParticipantesDoProjeto, Set<ClassGestores> profesorOrientador, String linkGit, String linkImage) {
-    this.id = id;
-    this.codigoProjeto = codigoProjeto;
-    this.nomeDoProjeto = nomeDoProjeto;
-    this.descricaoDoProjeto = descricaoDoProjeto;
-    this.areaDeConhecimento = areaDeConhecimento;
-    this.dataDeInicioDoProjeto = dataDeInicioDoProjeto;
-    this.dataDoFimDoProjeto = dataDoFimDoProjeto;
-    this.alunosParticipantesDoProjeto = alunosParticipantesDoProjeto;
-    this.profesorOrientador = profesorOrientador;
-    this.linkGit = linkGit;
-    this.linkImage = linkImage;
-  }
-
   @PrePersist
   public void geraCodigoProjeto() {
     String prefixo = "PROJ";
     int numero = (int) (Math.random() * 9000) + 1000;
     this.codigoProjeto = prefixo + numero;
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public String getCodigoProjeto() {
-    return codigoProjeto;
-  }
-
-  public void setCodigoProjeto(String codigoProjeto) {
-    this.codigoProjeto = codigoProjeto;
-  }
-
-  public String getNomeDoProjeto() {
-    return nomeDoProjeto;
-  }
-
-  public void setNomeDoProjeto(String nomeDoProjeto) {
-    this.nomeDoProjeto = nomeDoProjeto;
-  }
-
-  public String getDescricaoDoProjeto() {
-    return descricaoDoProjeto;
-  }
-
-  public void setDescricaoDoProjeto(String descricaoDoProjeto) {
-    this.descricaoDoProjeto = descricaoDoProjeto;
-  }
-
-  public String getAreaDeConhecimento() {
-    return areaDeConhecimento;
-  }
-
-  public void setAreaDeConhecimento(String areaDeConhecimento) {
-    this.areaDeConhecimento = areaDeConhecimento;
-  }
-
-  public LocalDate getDataDeInicioDoProjeto() {
-    return dataDeInicioDoProjeto;
-  }
-
-  public void setDataDeInicioDoProjeto(LocalDate dataDeInicioDoProjeto) {
-    this.dataDeInicioDoProjeto = dataDeInicioDoProjeto;
-  }
-
-  public LocalDate getDataDoFimDoProjeto() {
-    return dataDoFimDoProjeto;
-  }
-
-  public void setDataDoFimDoProjeto(LocalDate dataDoFimDoProjeto) {
-    this.dataDoFimDoProjeto = dataDoFimDoProjeto;
-  }
-
-  public List<ClassAlunos> getAlunosParticipantesDoProjeto() {
-    return alunosParticipantesDoProjeto;
-  }
-
-  public void setAlunosParticipantesDoProjeto(List<ClassAlunos> alunosParticipantesDoProjeto) {
-    this.alunosParticipantesDoProjeto = alunosParticipantesDoProjeto;
-  }
-
-  public Set<ClassGestores> getProfesorOrientador() {
-    return profesorOrientador;
-  }
-
-  public void setProfesorOrientador(Set<ClassGestores> profesorOrientador) {
-    this.profesorOrientador = profesorOrientador;
-  }
-
-  public String getLinkGit() {
-    return linkGit;
-  }
-
-  public void setLinkGit(String linkGit) {
-    this.linkGit = linkGit;
-  }
-
-  public String getLinkImage() {
-    return linkImage;
-  }
-
-  public void setLinkImage(String linkImage) {
-    this.linkImage = linkImage;
-  }
-
-  public ClassProjetos() {
-
   }
 }
