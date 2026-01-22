@@ -11,8 +11,8 @@ import com.example.API_Fabrica_Software.Service.UsuarioService.UsuarioService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@RequestMapping("/user")
 @RestController
+@RequestMapping("/user")
 public class ControllersUsers {
  @Autowired
  UsuarioService servise;
