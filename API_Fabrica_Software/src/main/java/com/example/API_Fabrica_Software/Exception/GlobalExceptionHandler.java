@@ -6,11 +6,12 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.client.HttpClientErrorException.Unauthorized;
 
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestControllerAdvice
-public class GlobalExceptionHandler {
+public class GlobalExceptionHandler extends RuntimeException{
  @ExceptionHandler(Exception.class)
  public ResponseEntity<ApiError> handleGeral(Exception ex, HttpServletRequest request) {
   ApiError erro = new ApiError(LocalDateTime.now(),
@@ -30,4 +31,5 @@ public class GlobalExceptionHandler {
     request.getRequestURI());
   return ResponseEntity.status(409).body(erro);
  }
+
 }

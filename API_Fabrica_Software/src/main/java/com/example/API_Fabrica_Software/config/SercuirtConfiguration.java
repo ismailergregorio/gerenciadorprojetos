@@ -1,5 +1,6 @@
 package com.example.API_Fabrica_Software.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -12,10 +13,13 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SercuirtConfiguration {
+  @Autowired
+  SercurityFilter sercurityFilter;
 
   @Bean
   public SecurityFilterChain securitFilterChan(HttpSecurity httpSecurity) throws Exception {
@@ -27,7 +31,9 @@ public class SercuirtConfiguration {
             .requestMatchers(HttpMethod.GET, "/user").hasRole("ADMIN")
             .requestMatchers(HttpMethod.POST, "/auth").permitAll()
             .requestMatchers(HttpMethod.POST, "/user").permitAll()
+            .requestMatchers(HttpMethod.POST, "/auth/refresh").permitAll()
             .anyRequest().authenticated())
+        .addFilterBefore(sercurityFilter, UsernamePasswordAuthenticationFilter.class)
         .build();
   }
 

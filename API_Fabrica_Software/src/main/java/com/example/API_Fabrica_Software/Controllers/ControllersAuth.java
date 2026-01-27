@@ -5,7 +5,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.API_Fabrica_Software.DTO.AuthDTO.ResponseAuthDTO;
 import com.example.API_Fabrica_Software.DTO.AuthDTO.authDTO;
-import com.example.API_Fabrica_Software.Service.UsuarioService.implementacao.AuthenticacaoServices;
+import com.example.API_Fabrica_Software.DTO.AuthDTO.authRefrashToker;
+import com.example.API_Fabrica_Software.Service.UsuarioService.implementacao.AuthenticacaoService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,13 +21,19 @@ public class ControllersAuth {
     @Autowired
     AuthenticationManager authenticationManager;
     @Autowired
-    AuthenticacaoServices authenticacaoServices;
+    AuthenticacaoService authenticacaoServices;
 
     @PostMapping
     public ResponseAuthDTO auth(@RequestBody authDTO entity) {
         var usuarioAutenticadoComToken = new UsernamePasswordAuthenticationToken(entity.login(), entity.senha());
         authenticationManager.authenticate(usuarioAutenticadoComToken);
-        return new ResponseAuthDTO(authenticacaoServices.obtetToken(entity), null);
+        return authenticacaoServices.obtetToken(entity);
+    }
+
+    @PostMapping("/refresh")
+    public ResponseAuthDTO authRefreshToker(@RequestBody authRefrashToker refresh) {
+        System.out.println(refresh.refresh());
+        return authenticacaoServices.obtetTokenRefreshToker(refresh.refresh());
     }
 
 }
