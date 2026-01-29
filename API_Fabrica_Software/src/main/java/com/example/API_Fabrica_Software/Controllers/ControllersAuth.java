@@ -25,6 +25,7 @@ public class ControllersAuth {
 
     @PostMapping
     public ResponseAuthDTO auth(@RequestBody authDTO entity) {
+        System.out.println(entity.login() + entity.senha());
         var usuarioAutenticadoComToken = new UsernamePasswordAuthenticationToken(entity.login(), entity.senha());
         authenticationManager.authenticate(usuarioAutenticadoComToken);
         return authenticacaoServices.obtetToken(entity);

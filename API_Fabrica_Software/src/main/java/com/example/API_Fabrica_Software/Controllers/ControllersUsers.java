@@ -34,13 +34,21 @@ public class ControllersUsers {
     }
 
     @GetMapping()
-    @PreAuthorize("hasRole(\"ADMIN\")")
-    public List<repostaUsuarioDTO> getMethodName() {
+    @PreAuthorize("hasAnyRole(\"ADMIN\",\"USER\")")
+    public List<repostaUsuarioDTO> getMethodName(Authentication auth) {
+        ClassUsuario usuarioLogado = (ClassUsuario) auth.getPrincipal();
+        System.out.println(usuarioLogado.getRoles());
+
+        if (!usuarioLogado.getRoles().equals(NivelUsuario.ADMIN)) {
+            return List.of(
+                    usuarioServices.getUser(usuarioLogado.getId()));
+        }
         return usuarioServices.usuarios();
+
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasRole(\"ADMIN\")")
+    @PreAuthorize("hasAnyRole(\"ADMIN\",\"USER\")")
     public ResponseEntity<?> getMethodName(@PathVariable Long id, Authentication auth) {
         ClassUsuario usuarioLogado = (ClassUsuario) auth.getPrincipal();
         System.out.println(usuarioLogado.getRoles());
@@ -51,9 +59,10 @@ public class ControllersUsers {
             return ResponseEntity.badRequest().body("Usuario não Existe");
         }
 
-        if (usuarioLogado.getRoles().equals(NivelUsuario.ADMIN)) {
-            return ResponseEntity.ok().body(user);
+        if (!usuarioLogado.getRoles().equals(NivelUsuario.ADMIN)) {
+            return ResponseEntity.ok().body(usuarioServices.getUser(usuarioLogado.getId()));
         }
+
         return ResponseEntity.ok().body(user);
     }
 
