@@ -14,7 +14,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,79 +24,82 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/config")
-@CrossOrigin(origins = "*")
 public class ControllerClassConfigSite {
 
- @Autowired
- RepositoryConfigSite repositoryConfigSite;
+  @Autowired
+  RepositoryConfigSite repositoryConfigSite;
 
- @GetMapping("/config")
- public List<dtoClassConfgSiteResp> getConfigSite() {
-  List<ClassConfigSite> itens = repositoryConfigSite.findAll();
-  return itens.stream().map(dtoClassConfgSiteResp::new).toList();
- }
-
- @PostMapping("/config")
- public ResponseEntity<dtoClassConfgSiteResp> postMethodName(@RequestBody dtoClassConfigSitePost entity) {
-  // TODO: process POST request
-  ClassConfigSite configuracao = new ClassConfigSite();
-
-  configuracao.setNomeConfig(entity.getNomeConfig());
-  configuracao.setValorSalvo(entity.getValorSalvo());
-
-  repositoryConfigSite.save(configuracao);
-
-  dtoClassConfgSiteResp iten = new dtoClassConfgSiteResp();
-
-  iten.setCodigoDaConfguracao(configuracao.getCodigoDaConfguracao());
-  iten.setNomeConfig(configuracao.getNomeConfig());
-  iten.setValorSalvo(configuracao.getValorSalvo());
-
-  return ResponseEntity.ok(iten);
- }
-
- @PutMapping("/config/{codigoDaConfguracao}")
- public ResponseEntity<dtoClassConfgSiteResp> putMethodName(@PathVariable String codigoDaConfguracao,
-   @RequestBody dtoClassConfigSitePut dto) {
-  Optional<ClassConfigSite> itens = repositoryConfigSite.findByCodigoDaConfguracao(codigoDaConfguracao);
-
-  if (itens.isEmpty()) {
-   return ResponseEntity.notFound().build();
+  @PreAuthorize("hasRole(\"ADMIN\")")
+  @GetMapping("/config")
+  public List<dtoClassConfgSiteResp> getConfigSite() {
+    List<ClassConfigSite> itens = repositoryConfigSite.findAll();
+    return itens.stream().map(dtoClassConfgSiteResp::new).toList();
   }
 
-  ClassConfigSite itenSelecionado = itens.get();
+  @PreAuthorize("hasRole(\"ADMIN\")")
+  @PostMapping("/config")
+  public ResponseEntity<dtoClassConfgSiteResp> postMethodName(@RequestBody dtoClassConfigSitePost entity) {
+    // TODO: process POST request
+    ClassConfigSite configuracao = new ClassConfigSite();
 
-  itenSelecionado.setValorSalvo(dto.getValorSalvo());
-  repositoryConfigSite.save(itenSelecionado);
+    configuracao.setNomeConfig(entity.getNomeConfig());
+    configuracao.setValorSalvo(entity.getValorSalvo());
 
-  dtoClassConfgSiteResp dtoResp = new dtoClassConfgSiteResp();
+    repositoryConfigSite.save(configuracao);
 
-  dtoResp.setCodigoDaConfguracao(itenSelecionado.getCodigoDaConfguracao());
-  dtoResp.setNomeConfig(itenSelecionado.getNomeConfig());
-  dtoResp.setValorSalvo(itenSelecionado.getValorSalvo());
+    dtoClassConfgSiteResp iten = new dtoClassConfgSiteResp();
 
-  return ResponseEntity.ok(dtoResp);
- }
+    iten.setCodigoDaConfguracao(configuracao.getCodigoDaConfguracao());
+    iten.setNomeConfig(configuracao.getNomeConfig());
+    iten.setValorSalvo(configuracao.getValorSalvo());
 
- @DeleteMapping("/config/{codigoDaConfguracao}")
- public ResponseEntity<dtoClassConfgSiteResp> DeleteConfig(@PathVariable String codigoDaConfguracao){
-  Optional<ClassConfigSite> itens = repositoryConfigSite.findByCodigoDaConfguracao(codigoDaConfguracao);
-
-  if(itens.isEmpty()){
-   return ResponseEntity.notFound().build();
+    return ResponseEntity.ok(iten);
   }
 
-  ClassConfigSite itenSelecionado = itens.get();
+  @PreAuthorize("hasRole(\"ADMIN\")")
+  @PutMapping("/config/{nomeConfig}")
+  public ResponseEntity<dtoClassConfgSiteResp> putMethodName(@PathVariable String nomeConfig,
+      @RequestBody dtoClassConfigSitePut dto) {
+    Optional<ClassConfigSite> itens = repositoryConfigSite.findByNomeConfig(nomeConfig);
 
-  repositoryConfigSite.delete(itenSelecionado);
+    if (itens.isEmpty()) {
+      return ResponseEntity.notFound().build();
+    }
 
-  dtoClassConfgSiteResp dtoResp =  new dtoClassConfgSiteResp();
+    ClassConfigSite itenSelecionado = itens.get();
 
-  dtoResp.setCodigoDaConfguracao(itenSelecionado.getCodigoDaConfguracao());
-  dtoResp.setNomeConfig(itenSelecionado.getNomeConfig());
-  dtoResp.setValorSalvo(itenSelecionado.getValorSalvo());
+    itenSelecionado.setValorSalvo(dto.getValorSalvo());
+    repositoryConfigSite.save(itenSelecionado);
 
-  return ResponseEntity.ok(dtoResp);
- }
+    dtoClassConfgSiteResp dtoResp = new dtoClassConfgSiteResp();
+
+    dtoResp.setCodigoDaConfguracao(itenSelecionado.getCodigoDaConfguracao());
+    dtoResp.setNomeConfig(itenSelecionado.getNomeConfig());
+    dtoResp.setValorSalvo(itenSelecionado.getValorSalvo());
+
+    return ResponseEntity.ok(dtoResp);
+  }
+
+  @PreAuthorize("hasRole(\"ADMIN\")")
+  @DeleteMapping("/config/{nomeConfig}")
+  public ResponseEntity<dtoClassConfgSiteResp> DeleteConfig(@PathVariable String nomeConfig) {
+    Optional<ClassConfigSite> itens = repositoryConfigSite.findByNomeConfig(nomeConfig);
+
+    if (itens.isEmpty()) {
+      return ResponseEntity.notFound().build();
+    }
+
+    ClassConfigSite itenSelecionado = itens.get();
+
+    repositoryConfigSite.delete(itenSelecionado);
+
+    dtoClassConfgSiteResp dtoResp = new dtoClassConfgSiteResp();
+
+    dtoResp.setCodigoDaConfguracao(itenSelecionado.getCodigoDaConfguracao());
+    dtoResp.setNomeConfig(itenSelecionado.getNomeConfig());
+    dtoResp.setValorSalvo(itenSelecionado.getValorSalvo());
+
+    return ResponseEntity.ok(dtoResp);
+  }
 
 }

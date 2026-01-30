@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,6 +41,7 @@ public class ControllersGestores {
     RepositoryProjetos repositoryProjetos;
 
     @PostMapping("/addgestores")
+    @PreAuthorize("hasRole(\"ADMIN\")")
     public ResponseEntity<dtoGestoresRespost> addGestores(@RequestBody dtoGestoresPost dtogestor) {
         ClassGestores gestor = new ClassGestores();
 
@@ -80,6 +82,7 @@ public class ControllersGestores {
     }
 
     @GetMapping("/gestores")
+    @PreAuthorize("hasRole(\"ADMIN\")")
     public List<dtoGestoresRespost> GetGestores() {
         List<ClassGestores> gestores = repositoryGestores.findAll();
 
@@ -87,6 +90,7 @@ public class ControllersGestores {
     }
 
     @GetMapping("/gestor/{CodigoGestor}")
+    @PreAuthorize("hasRole(\"ADMIN\")")
     public ResponseEntity<?> getMethodName(@PathVariable String CodigoGestor, HttpServletRequest request) {
         Optional<ClassGestores> gestoresselecionados = repositoryGestores.findByCodigoGestor(CodigoGestor);
 
@@ -116,6 +120,7 @@ public class ControllersGestores {
     }
 
     @PutMapping("/gestor/{CodigoGestor}")
+    @PreAuthorize("hasRole(\"ADMIN\")")
     public ResponseEntity<?> putGestores(@PathVariable String CodigoGestor,
             @RequestBody dtoGestoresPost gestorAtulisado, HttpServletRequest request) {
         // TODO: process PUT request
@@ -171,6 +176,7 @@ public class ControllersGestores {
     }
 
     @DeleteMapping("/gestor/{CodigoGestor}")
+    @PreAuthorize("hasRole(\"ADMIN\")")
     public ResponseEntity<?> deleteGestores(@PathVariable String CodigoGestor, HttpServletRequest request) {
 
         Optional<ClassGestores> itenOptional = repositoryGestores.findByCodigoGestor(CodigoGestor);

@@ -10,5 +10,6 @@ import com.example.API_Fabrica_Software.Model.ClassConfigPage.ClassConfigSite;
 @Repository
 public interface RepositoryConfigSite extends JpaRepository<ClassConfigSite, Long>{
  Optional<ClassConfigSite> findByCodigoDaConfguracao(String codigoDaConfguracao);
+ Optional<ClassConfigSite> findByNomeConfig(String nomeConfig);
 
 }

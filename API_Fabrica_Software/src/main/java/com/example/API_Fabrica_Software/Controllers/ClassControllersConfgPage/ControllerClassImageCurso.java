@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +32,7 @@ public class ControllerClassImageCurso {
     RepositoryImagensCurso crepositoryImagensCurso;
 
     @PostMapping("/imagemcurso")
+    @PreAuthorize("hasRole(\"ADMIN\")")
     public ResponseEntity<dtoClassImageCursoResp> AddImagenCurso(@RequestBody dtoClassImageCursoPost dto) {
         ClassImageCursos imagen = new ClassImageCursos();
 
@@ -49,12 +51,14 @@ public class ControllerClassImageCurso {
     }
 
     @GetMapping("/imagemcurso")
+    @PreAuthorize("hasRole(\"ADMIN\")")
     public List<dtoClassImageCursoResp> GetImagens() {
         List<ClassImageCursos> dados = crepositoryImagensCurso.findAll();
         return dados.stream().map(dtoClassImageCursoResp::new).toList();
     }
 
     @GetMapping("/imagemcurso/{codigoImagem}")
+    @PreAuthorize("hasRole(\"ADMIN\")")
     public ResponseEntity<?> GetImagen(@PathVariable String codigoImagem, HttpServletRequest request) {
         Optional<ClassImageCursos> imagens = crepositoryImagensCurso.findByCodigoImagem(codigoImagem);
         if (!imagens.isPresent()) {
@@ -79,6 +83,7 @@ public class ControllerClassImageCurso {
     }
 
     @DeleteMapping("/imagemcurso/{codigoImagem}")
+    @PreAuthorize("hasRole(\"ADMIN\")")
     public ResponseEntity<?> DeletImagen(@PathVariable String codigoImagem, HttpServletRequest request) {
         Optional<ClassImageCursos> itenSelecionado = crepositoryImagensCurso.findByCodigoImagem(codigoImagem);
 

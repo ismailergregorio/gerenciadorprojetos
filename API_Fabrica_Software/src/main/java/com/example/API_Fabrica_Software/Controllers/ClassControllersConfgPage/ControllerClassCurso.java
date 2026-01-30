@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +32,7 @@ public class ControllerClassCurso {
     RepositoryCurso repositoryCurso;
 
     @PostMapping("/curso")
+    @PreAuthorize("hasRole(\"ADMIN\")")
     public ResponseEntity<dtoClassCursoResp> AddImagenCurso(@RequestBody dtoClassCursoPost dto) {
         ClassCursos curso = new ClassCursos();
 
@@ -47,12 +49,14 @@ public class ControllerClassCurso {
     }
 
     @GetMapping("/curso")
+    @PreAuthorize("hasRole(\"ADMIN\")")
     public List<dtoClassCursoResp> GetImagens() {
         List<ClassCursos> dados = repositoryCurso.findAll();
         return dados.stream().map(dtoClassCursoResp::new).toList();
     }
 
     @GetMapping("/curso/{codigoDoCurso}")
+    @PreAuthorize("hasRole(\"ADMIN\")")
     public ResponseEntity<dtoClassCursoResp> GetImagen(@PathVariable String codigoDoCurso) {
         Optional<ClassCursos> curso = repositoryCurso.findByCodigoDoCurso(codigoDoCurso);
         if (curso.isEmpty()) {
@@ -69,6 +73,7 @@ public class ControllerClassCurso {
     }
 
     @DeleteMapping("/curso/{codigoDoCurso}")
+    @PreAuthorize("hasRole(\"ADMIN\")")
     public ResponseEntity<?> DeletImagen(@PathVariable String codigoDoCurso,HttpServletRequest request) {
         Optional<ClassCursos> itenSelecionado = repositoryCurso.findByCodigoDoCurso(codigoDoCurso);
 

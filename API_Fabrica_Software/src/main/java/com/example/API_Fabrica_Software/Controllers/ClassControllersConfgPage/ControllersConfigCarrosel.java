@@ -27,7 +27,6 @@ import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/carrocel")
-@CrossOrigin(origins = "*")
 public class ControllersConfigCarrosel {
 
     @Autowired
@@ -54,6 +53,7 @@ public class ControllersConfigCarrosel {
     }
 
     @GetMapping("/carrocel_imagens")
+    @PreAuthorize("hasRole(\"ADMIN\")")
     public List<dtoConfigCarrocelResp> getImagens() {
         List<ClassCarrocel> imagens = repositorioImagens.findAll();
 
