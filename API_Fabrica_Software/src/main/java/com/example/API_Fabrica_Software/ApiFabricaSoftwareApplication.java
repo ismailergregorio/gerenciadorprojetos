@@ -10,6 +10,7 @@ public class ApiFabricaSoftwareApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ApiFabricaSoftwareApplication.class, args);
+
 	}
 
 }
