@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.API_Fabrica_Software.DTO.UsersDTO.criarUsuarioDTO;
 import com.example.API_Fabrica_Software.DTO.UsersDTO.repostaUsuarioDTO;
+import com.example.API_Fabrica_Software.DTO.UsersDTO.respostaUsuarioSenhaDTO;
+import com.example.API_Fabrica_Software.DTO.UsersDTO.updateUsuarioDTO;
 import com.example.API_Fabrica_Software.Enun.NivelUsuario;
 import com.example.API_Fabrica_Software.Model.ClassUsuario;
 import com.example.API_Fabrica_Software.Service.UsuarioService.UsuarioServices;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
 @RequestMapping("/user")
@@ -71,6 +74,14 @@ public class ControllersUsers {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deletar(@PathVariable Long id) {
         return usuarioServices.deletaUsuario(id);
+    }
+
+    @PreAuthorize("hasAnyRole(\"ADMIN\",\"USER\")")
+    @PutMapping("/{id}")
+    public ResponseEntity<?> putMethodName(@PathVariable Long id,
+            @RequestBody updateUsuarioDTO entity) {
+        ResponseEntity<?> response = usuarioServices.updateUsuario(entity);
+        return response;
     }
 
 }
