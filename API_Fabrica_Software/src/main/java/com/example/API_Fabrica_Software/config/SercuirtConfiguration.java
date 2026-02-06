@@ -36,6 +36,7 @@ public class SercuirtConfiguration {
         .authorizeHttpRequests(authoriza -> authoriza
             .requestMatchers(HttpMethod.POST, "/auth/**").permitAll()
             .requestMatchers(HttpMethod.POST, "/user").permitAll()
+            .requestMatchers( "/page/**").permitAll()
             // .requestMatchers(HttpMethod.GET, "/user").hasAnyRole
             .anyRequest().authenticated())
         .addFilterBefore(sercurityFilter, UsernamePasswordAuthenticationFilter.class)
