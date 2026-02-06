@@ -41,7 +41,7 @@ public class ControllersGestores {
     RepositoryProjetos repositoryProjetos;
 
     @PostMapping("/addgestores")
-    @PreAuthorize("hasRole(\"ADMIN\")")
+    @PreAuthorize("hasAnyRole(\"ADMIN\",\"USER_N1\",\"USER_N2\")")
     public ResponseEntity<dtoGestoresRespost> addGestores(@RequestBody dtoGestoresPost dtogestor) {
         ClassGestores gestor = new ClassGestores();
 
@@ -82,7 +82,7 @@ public class ControllersGestores {
     }
 
     @GetMapping("/gestores")
-    @PreAuthorize("hasRole(\"ADMIN\")")
+    @PreAuthorize("hasAnyRole(\"ADMIN\",\"USER_N1\",\"USER_N2\",\"USER\")")
     public List<dtoGestoresRespost> GetGestores() {
         List<ClassGestores> gestores = repositoryGestores.findAll();
 
@@ -90,7 +90,7 @@ public class ControllersGestores {
     }
 
     @GetMapping("/gestor/{CodigoGestor}")
-    @PreAuthorize("hasRole(\"ADMIN\")")
+    @PreAuthorize("hasAnyRole(\"ADMIN\",\"USER_N1\",\"USER_N2\",\"USER\")")
     public ResponseEntity<?> getMethodName(@PathVariable String CodigoGestor, HttpServletRequest request) {
         Optional<ClassGestores> gestoresselecionados = repositoryGestores.findByCodigoGestor(CodigoGestor);
 
@@ -120,7 +120,7 @@ public class ControllersGestores {
     }
 
     @PutMapping("/gestor/{CodigoGestor}")
-    @PreAuthorize("hasRole(\"ADMIN\")")
+    @PreAuthorize("hasAnyRole(\"ADMIN\",\"USER_N1\",\"USER_N2\")")
     public ResponseEntity<?> putGestores(@PathVariable String CodigoGestor,
             @RequestBody dtoGestoresPost gestorAtulisado, HttpServletRequest request) {
         // TODO: process PUT request
@@ -176,7 +176,7 @@ public class ControllersGestores {
     }
 
     @DeleteMapping("/gestor/{CodigoGestor}")
-    @PreAuthorize("hasRole(\"ADMIN\")")
+    @PreAuthorize("hasAnyRole(\"ADMIN\",\"USER_N1\",\"USER_N2\")")
     public ResponseEntity<?> deleteGestores(@PathVariable String CodigoGestor, HttpServletRequest request) {
 
         Optional<ClassGestores> itenOptional = repositoryGestores.findByCodigoGestor(CodigoGestor);

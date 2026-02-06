@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,7 +36,7 @@ public class ControllersAlunos {
 
     @Autowired
     RepositoryProjetos repositoryProjetos;
-
+    @PreAuthorize("hasAnyRole(\"ADMIN\",\"USER_N1\",\"USER_N2\")")
     @PostMapping("/addalunos")
     public ResponseEntity<dtoAlunosRespost> postAlunos(@RequestBody dtoAlunosPost dto) {
         // TODO: process POST request
@@ -77,12 +78,14 @@ public class ControllersAlunos {
     }
 
     @GetMapping("/alunos")
+    @PreAuthorize("hasAnyRole(\"ADMIN\",\"USER_N1\",\"USER_N2\",\"USER\")")
     public List<dtoAlunosRespost> getAlunos() {
         List<ClassAlunos> alunos = repositoryAlunos.findAll();
         return alunos.stream().map(dtoAlunosRespost::new).toList();
     }
 
     @GetMapping("/aluno/{ra}")
+    @PreAuthorize("hasAnyRole(\"ADMIN\",\"USER_N1\",\"USER_N2\",\"USER\")")
     public ResponseEntity<?> getAluno(@PathVariable String ra, HttpServletRequest request) {
         Optional<ClassAlunos> alunoOptional = repositoryAlunos.findByRa(ra);
 
@@ -111,7 +114,7 @@ public class ControllersAlunos {
 
         return ResponseEntity.ok(dtoSelecionado);
     }
-
+    @PreAuthorize("hasAnyRole(\"ADMIN\",\"USER_N1\",\"USER_N2\")")
     @DeleteMapping("/aluno/{ra}")
     public ResponseEntity<?> delAluno(@PathVariable String ra, HttpServletRequest request) {
         Optional<ClassAlunos> deletAluno = repositoryAlunos.findByRa(ra);
@@ -142,7 +145,7 @@ public class ControllersAlunos {
 
         return ResponseEntity.ok(dtoAlunoResp);
     }
-
+    @PreAuthorize("hasAnyRole(\"ADMIN\",\"USER_N1\",\"USER_N2\")")
     @PutMapping("/aluno/{ra}")
     public ResponseEntity<?> putMethodName(@PathVariable String ra,
             @RequestBody dtoAlunoAtulizarInfomacao dtoAluno,HttpServletRequest request) {

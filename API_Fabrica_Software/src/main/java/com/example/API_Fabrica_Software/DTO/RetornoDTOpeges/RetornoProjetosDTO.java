@@ -8,7 +8,7 @@ public record RetornoProjetosDTO(
         String nomeDoProjeto,
         String descricaoDoProjeto,
         String areaDeConhecimento,
-        List<String> alunosParticipantesDoProjeto,
+        List<RetornoAlunosDTO> alunosParticipantesDoProjeto,
         List<String> profesorOrientador,
         String linkGit,
         String linkImage) {

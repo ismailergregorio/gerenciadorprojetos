@@ -29,14 +29,14 @@ public class ControllerClassConfigSite {
   @Autowired
   RepositoryConfigSite repositoryConfigSite;
 
-  @PreAuthorize("hasRole(\"ADMIN\")")
+  @PreAuthorize("hasAnyRole(\"ADMIN\",\"USER_N1\")")
   @GetMapping("/config")
   public List<dtoClassConfgSiteResp> getConfigSite() {
     List<ClassConfigSite> itens = repositoryConfigSite.findAll();
     return itens.stream().map(dtoClassConfgSiteResp::new).toList();
   }
 
-  @PreAuthorize("hasRole(\"ADMIN\")")
+  @PreAuthorize("hasAnyRole(\"ADMIN\",\"USER_N1\")")
   @PostMapping("/config")
   public ResponseEntity<dtoClassConfgSiteResp> postMethodName(@RequestBody dtoClassConfigSitePost entity) {
     // TODO: process POST request
@@ -55,8 +55,7 @@ public class ControllerClassConfigSite {
 
     return ResponseEntity.ok(iten);
   }
-
-  @PreAuthorize("hasRole(\"ADMIN\")")
+  @PreAuthorize("hasAnyRole(\"ADMIN\",\"USER_N1\")")
   @PutMapping("/config/{nomeConfig}")
   public ResponseEntity<dtoClassConfgSiteResp> putMethodName(@PathVariable String nomeConfig,
       @RequestBody dtoClassConfigSitePut dto) {
@@ -80,7 +79,7 @@ public class ControllerClassConfigSite {
     return ResponseEntity.ok(dtoResp);
   }
 
-  @PreAuthorize("hasRole(\"ADMIN\")")
+  @PreAuthorize("hasAnyRole(\"ADMIN\",\"USER_N1\")")
   @DeleteMapping("/config/{nomeConfig}")
   public ResponseEntity<dtoClassConfgSiteResp> DeleteConfig(@PathVariable String nomeConfig) {
     Optional<ClassConfigSite> itens = repositoryConfigSite.findByNomeConfig(nomeConfig);

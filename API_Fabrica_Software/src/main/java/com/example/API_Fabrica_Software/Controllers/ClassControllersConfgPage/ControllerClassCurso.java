@@ -32,7 +32,7 @@ public class ControllerClassCurso {
     RepositoryCurso repositoryCurso;
 
     @PostMapping("/curso")
-    @PreAuthorize("hasRole(\"ADMIN\")")
+    @PreAuthorize("hasAnyRole(\"ADMIN\",\"USER_N1\")")
     public ResponseEntity<dtoClassCursoResp> AddImagenCurso(@RequestBody dtoClassCursoPost dto) {
         ClassCursos curso = new ClassCursos();
 
@@ -49,14 +49,14 @@ public class ControllerClassCurso {
     }
 
     @GetMapping("/curso")
-    @PreAuthorize("hasRole(\"ADMIN\")")
+    @PreAuthorize("hasAnyRole(\"ADMIN\",\"USER_N1\")")
     public List<dtoClassCursoResp> GetImagens() {
         List<ClassCursos> dados = repositoryCurso.findAll();
         return dados.stream().map(dtoClassCursoResp::new).toList();
     }
 
     @GetMapping("/curso/{codigoDoCurso}")
-    @PreAuthorize("hasRole(\"ADMIN\")")
+    @PreAuthorize("hasAnyRole(\"ADMIN\",\"USER_N1\")")
     public ResponseEntity<dtoClassCursoResp> GetImagen(@PathVariable String codigoDoCurso) {
         Optional<ClassCursos> curso = repositoryCurso.findByCodigoDoCurso(codigoDoCurso);
         if (curso.isEmpty()) {
@@ -73,7 +73,7 @@ public class ControllerClassCurso {
     }
 
     @DeleteMapping("/curso/{codigoDoCurso}")
-    @PreAuthorize("hasRole(\"ADMIN\")")
+    @PreAuthorize("hasAnyRole(\"ADMIN\",\"USER_N1\")")
     public ResponseEntity<?> DeletImagen(@PathVariable String codigoDoCurso,HttpServletRequest request) {
         Optional<ClassCursos> itenSelecionado = repositoryCurso.findByCodigoDoCurso(codigoDoCurso);
 

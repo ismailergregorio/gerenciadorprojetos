@@ -6,14 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.API_Fabrica_Software.DTO.UsersDTO.criarUsuarioDTO;
 import com.example.API_Fabrica_Software.DTO.UsersDTO.repostaUsuarioDTO;
-import com.example.API_Fabrica_Software.DTO.UsersDTO.respostaUsuarioSenhaDTO;
 import com.example.API_Fabrica_Software.DTO.UsersDTO.updateUsuarioDTO;
 import com.example.API_Fabrica_Software.Enun.NivelUsuario;
 import com.example.API_Fabrica_Software.Model.ClassUsuario;
@@ -32,6 +29,7 @@ public class ControllersUsers {
     @Autowired
     UsuarioServices usuarioServices;
 
+    // @PreAuthorize("hasAnyRole(\"ADMIN\")")
     @PostMapping()
     public repostaUsuarioDTO postMethodName(@RequestBody criarUsuarioDTO entity) {
         return usuarioServices.salvar(entity);
@@ -52,7 +50,7 @@ public class ControllersUsers {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAnyRole(\"ADMIN\",\"USER\")")
+    @PreAuthorize("hasAnyRole(\"ADMIN\",\"USER\",\"USER_N1\",\"USER_N2\")")
     public ResponseEntity<?> getMethodName(@PathVariable Long id, Authentication auth) {
         ClassUsuario usuarioLogado = (ClassUsuario) auth.getPrincipal();
         System.out.println(usuarioLogado.getRoles());
@@ -76,7 +74,7 @@ public class ControllersUsers {
         return usuarioServices.deletaUsuario(id);
     }
 
-    @PreAuthorize("hasAnyRole(\"ADMIN\",\"USER\")")
+    @PreAuthorize("hasAnyRole(\"ADMIN\",\"USER\",\"USER_N1\",\"USER_N2\")")
     @PutMapping("/{id}")
     public ResponseEntity<?> putMethodName(@PathVariable Long id,
             @RequestBody updateUsuarioDTO entity) {

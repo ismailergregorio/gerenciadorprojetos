@@ -7,7 +7,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,7 +31,7 @@ public class ControllersConfigCarrosel {
     @Autowired
     RepositoryCarrocel repositorioImagens;
 
-    @PreAuthorize("hasRole(\"ADMIN\")")
+    @PreAuthorize("hasAnyRole(\"ADMIN\",\"USER_N1\")")
     @PostMapping("/addimagen")
     public ResponseEntity<dtoConfigCarrocelResp> PostImagens(@RequestBody dtoConfgCarrocelPost dtoCarrocel) {
 
@@ -53,13 +52,14 @@ public class ControllersConfigCarrosel {
     }
 
     @GetMapping("/carrocel_imagens")
-    @PreAuthorize("hasRole(\"ADMIN\")")
+    @PreAuthorize("hasAnyRole(\"ADMIN\",\"USER_N1\")")
     public List<dtoConfigCarrocelResp> getImagens() {
         List<ClassCarrocel> imagens = repositorioImagens.findAll();
 
         return imagens.stream().map(dtoConfigCarrocelResp::new).toList();
     }
-    @PreAuthorize("hasRole(\"ADMIN\")")
+
+    @PreAuthorize("hasAnyRole(\"ADMIN\",\"USER_N1\")")
     @PutMapping("path/{codigoImagem}")
     public ResponseEntity<?> putAlizarImg(@PathVariable String codigoImagem,
             @RequestBody dtoConfgCarrocelPost dto, HttpServletRequest request) {
@@ -91,7 +91,8 @@ public class ControllersConfigCarrosel {
 
         return ResponseEntity.ok(dtoResposta);
     }
-    @PreAuthorize("hasRole(\"ADMIN\")")
+
+    @PreAuthorize("hasAnyRole(\"ADMIN\",\"USER_N1\")")
     @DeleteMapping("path/{codigoImagem}")
     public ResponseEntity<?> putAlizarImg(@PathVariable String codigoImagem, HttpServletRequest request) {
 

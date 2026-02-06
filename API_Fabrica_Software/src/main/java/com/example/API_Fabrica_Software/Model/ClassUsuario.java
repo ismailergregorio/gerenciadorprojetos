@@ -40,6 +40,8 @@ public class ClassUsuario implements UserDetails {
    private String login;
    @Column(nullable = false)
    private String senha;
+   @Enumerated(EnumType.STRING)
+   @Column(nullable = false)
    private NivelUsuario roles;
    @CreatedDate
    private LocalDateTime dataDeCriacao;
@@ -53,12 +55,29 @@ public class ClassUsuario implements UserDetails {
       this.roles = roles;
    }
 
+   // ADMIN("admin"),
+   // USER_N1("usuario nivel 1"),
+   // USER_N2("usuario nivel 2"),
+   // USER("user");
    @Override
    public Collection<? extends GrantedAuthority> getAuthorities() {
       // TODO Auto-generated method stub
       if (this.roles == NivelUsuario.ADMIN) {
          return List.of(
                new SimpleGrantedAuthority("ROLE_ADMIN"),
+               new SimpleGrantedAuthority("ROLE_USER_N1"),
+               new SimpleGrantedAuthority("ROLE_USER_N2"),
+               new SimpleGrantedAuthority("ROLE_USER"));
+      }
+      if (this.roles == NivelUsuario.USER_N1) {
+         return List.of(
+               new SimpleGrantedAuthority("ROLE_USER_N1"),
+               new SimpleGrantedAuthority("ROLE_USER_N2"),
+               new SimpleGrantedAuthority("ROLE_USER"));
+      }
+      if (this.roles == NivelUsuario.USER_N2) {
+         return List.of(
+               new SimpleGrantedAuthority("ROLE_USER_N2"),
                new SimpleGrantedAuthority("ROLE_USER"));
       }
       return List.of(

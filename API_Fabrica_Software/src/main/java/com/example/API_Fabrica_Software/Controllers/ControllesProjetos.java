@@ -54,20 +54,20 @@ public class ControllesProjetos {
   @Autowired
   ServiceGetProjeto serviceGetProjeto;
 
-  @PreAuthorize("hasAnyRole('ADMIN')")
+  @PreAuthorize("hasAnyRole(\"ADMIN\",\"USER_N1\",\"USER_N2\")")
   @PostMapping("/addprojetos")
   public ResponseEntity<dtoProjetoResp> CreatinProjeto(@Valid @RequestBody dtoProjetoPost DTO) {
     ResponseEntity<dtoProjetoResp> gestore = servicePostProjetos.postProjeto(DTO);
     return gestore;
   }
 
-  @PreAuthorize("hasAnyRole('ADMIN')")
+  @PreAuthorize("hasAnyRole(\"ADMIN\",\"USER_N1\",\"USER_N2\",\"USER\")")
   @GetMapping("/getprojetos")
   public List<dtoProjetoResp> GetProjeto() {
     return serviceGetProjetos.getProjetos();
   }
 
-  @PreAuthorize("hasAnyRole('ADMIN')")
+  @PreAuthorize("hasAnyRole(\"ADMIN\",\"USER_N1\",\"USER_N2\",\"USER\")")
   @GetMapping("/getprojetos/{identicadorProjetos}")
   public ResponseEntity<?> GetProjetoId(@PathVariable String identicadorProjetos, HttpServletRequest request) {
 
@@ -76,7 +76,7 @@ public class ControllesProjetos {
     return service;
   }
 
-  @PreAuthorize("hasAnyRole('ADMIN')")
+  @PreAuthorize("hasAnyRole(\"ADMIN\",\"USER_N1\",\"USER_N2\")")
   @PutMapping("/{identicadorProjetos}")
   @Transactional
   public ResponseEntity<dtoProjetoAtulizacaoInfomacao> updateProjetos(@PathVariable String identicadorProjetos,
@@ -87,17 +87,11 @@ public class ControllesProjetos {
     return dtoProjetoRes; // Melhor retornar o produto atualizado
   }
 
-  @PreAuthorize("hasAnyRole('ADMIN')")
+  @PreAuthorize("hasAnyRole(\"ADMIN\",\"USER_N1\",\"USER_N2\")")
   @DeleteMapping("/{identicadorProjetos}")
   public ResponseEntity<?> DeleteProduct(@PathVariable String identicadorProjetos, HttpServletRequest request) {
     ResponseEntity<?> serveice = serviceDeleteProjetos.deleteProjeto(identicadorProjetos, request);
 
     return serveice;
   }
-
-  @GetMapping("/teste-privado")
-  public String teste() {
-    return "SE APARECER SEM TOKEN, ESTÁ ERRADO";
-  }
-
 }

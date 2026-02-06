@@ -32,7 +32,7 @@ public class ControllerClassImageCurso {
     RepositoryImagensCurso crepositoryImagensCurso;
 
     @PostMapping("/imagemcurso")
-    @PreAuthorize("hasRole(\"ADMIN\")")
+    @PreAuthorize("hasAnyRole(\"ADMIN\",\"USER_N1\")")
     public ResponseEntity<dtoClassImageCursoResp> AddImagenCurso(@RequestBody dtoClassImageCursoPost dto) {
         ClassImageCursos imagen = new ClassImageCursos();
 
@@ -51,14 +51,14 @@ public class ControllerClassImageCurso {
     }
 
     @GetMapping("/imagemcurso")
-    @PreAuthorize("hasRole(\"ADMIN\")")
+    @PreAuthorize("hasAnyRole(\"ADMIN\",\"USER_N1\")")
     public List<dtoClassImageCursoResp> GetImagens() {
         List<ClassImageCursos> dados = crepositoryImagensCurso.findAll();
         return dados.stream().map(dtoClassImageCursoResp::new).toList();
     }
 
     @GetMapping("/imagemcurso/{codigoImagem}")
-    @PreAuthorize("hasRole(\"ADMIN\")")
+    @PreAuthorize("hasAnyRole(\"ADMIN\",\"USER_N1\")")
     public ResponseEntity<?> GetImagen(@PathVariable String codigoImagem, HttpServletRequest request) {
         Optional<ClassImageCursos> imagens = crepositoryImagensCurso.findByCodigoImagem(codigoImagem);
         if (!imagens.isPresent()) {
@@ -83,7 +83,7 @@ public class ControllerClassImageCurso {
     }
 
     @DeleteMapping("/imagemcurso/{codigoImagem}")
-    @PreAuthorize("hasRole(\"ADMIN\")")
+    @PreAuthorize("hasAnyRole(\"ADMIN\",\"USER_N1\")")
     public ResponseEntity<?> DeletImagen(@PathVariable String codigoImagem, HttpServletRequest request) {
         Optional<ClassImageCursos> itenSelecionado = crepositoryImagensCurso.findByCodigoImagem(codigoImagem);
 

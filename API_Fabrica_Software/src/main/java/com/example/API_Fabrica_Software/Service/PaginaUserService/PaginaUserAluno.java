@@ -19,8 +19,12 @@ public class PaginaUserAluno {
         List<ClassAlunos> alunos = repositoryAlunos.findAll();
 
         List<RetornoAlunosDTO> dados = alunos.stream().map(aluno -> new RetornoAlunosDTO(
-                aluno.getRa(), aluno.getNome(), aluno.getProjetoSelecionado(), aluno.getCurso())).toList();
-                
+                aluno.getRa(),
+                aluno.getNome(),
+                aluno.getEmailInstitucional(),
+                aluno.getProjetoSelecionado() != null ? aluno.getProjetoSelecionado().getCodigoProjeto() : null,
+                aluno.getCurso())).toList();
+        System.out.println(dados);
         return dados;
     }
 
@@ -29,7 +33,11 @@ public class PaginaUserAluno {
 
         if (alunos.isPresent()) {
             ClassAlunos aluno = alunos.get();
-            return new RetornoAlunosDTO(aluno.getRa(), aluno.getNome(), aluno.getProjetoSelecionado(),
+            return new RetornoAlunosDTO(
+                    aluno.getRa(),
+                    aluno.getNome(),
+                    aluno.getEmailInstitucional(),
+                    aluno.getProjetoSelecionado()!= null ? aluno.getProjetoSelecionado().getCodigoProjeto() : null,
                     aluno.getCurso());
         }
         return null;

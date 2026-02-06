@@ -1,13 +1,13 @@
 package com.example.API_Fabrica_Software.Service.PaginaUserService;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.API_Fabrica_Software.DTO.RetornoDTOpeges.RetornoAlunosDTO;
 import com.example.API_Fabrica_Software.DTO.RetornoDTOpeges.RetornoProjetosDTO;
-import com.example.API_Fabrica_Software.Model.ClassAlunos;
 import com.example.API_Fabrica_Software.Model.ClassProjetos;
 import com.example.API_Fabrica_Software.Repository.RepositoryProjetos;
 
@@ -21,25 +21,42 @@ public class PaginaUserProjeto {
         List<ClassProjetos> projetos = repositoryProjetos.findAll();
 
         List<RetornoProjetosDTO> dados = projetos.stream().map(projeto -> new RetornoProjetosDTO(
-                projeto.getCodigoProjeto(), 
-                projeto.getNomeDoProjeto(), 
+                projeto.getCodigoProjeto(),
+                projeto.getNomeDoProjeto(),
                 projeto.getDescricaoDoProjeto(),
                 projeto.getAreaDeConhecimento(),
-                projeto.getAlunosParticipantesDoProjeto(),
-                projeto.getProfesorOrientador(),
+                projeto.getAlunosParticipantesDoProjeto().stream().map(aluno -> new RetornoAlunosDTO(
+                        aluno.getRa(),
+                        aluno.getNome(),
+                        aluno.getEmailInstitucional(),
+                        aluno.getProjetoSelecionado().getCodigoProjeto(),
+                        aluno.getCurso())).toList(),
+                projeto.getProfesorOrientador().stream().map(gestor -> gestor.getCodigoGestor()).toList(),
                 projeto.getLinkGit(),
                 projeto.getLinkImage())).toList();
 
-        return null;
+        return dados;
     }
 
-    public RetornoProjetosDTO getProjeto(String ra) {
-        Optional<ClassAlunos> alunos = repositoryAlunos.findByRa(ra);
+    public RetornoProjetosDTO getProjeto(String codigoProjeto) {
+        Optional<ClassProjetos> projetoSelecionado = repositoryProjetos.findByCodigoProjeto(codigoProjeto);
 
-        if (alunos.isPresent()) {
-            ClassAlunos aluno = alunos.get();
-            return new RetornoAlunosDTO(aluno.getRa(), aluno.getNome(), aluno.getProjetoSelecionado(),
-                    aluno.getCurso());
+        if (projetoSelecionado.isPresent()) {
+            ClassProjetos projeto = projetoSelecionado.get();
+            return new RetornoProjetosDTO(
+                    projeto.getCodigoProjeto(),
+                    projeto.getNomeDoProjeto(),
+                    projeto.getDescricaoDoProjeto(),
+                    projeto.getAreaDeConhecimento(),
+                    projeto.getAlunosParticipantesDoProjeto().stream().map(aluno -> new RetornoAlunosDTO(
+                            aluno.getRa(),
+                            aluno.getNome(),
+                            aluno.getEmailInstitucional(),
+                            aluno.getProjetoSelecionado().getCodigoProjeto(),
+                            aluno.getCurso())).toList(),
+                    projeto.getProfesorOrientador().stream().map(gestor -> gestor.getCodigoGestor()).toList(),
+                    projeto.getLinkGit(),
+                    projeto.getLinkImage());
         }
         return null;
     }
