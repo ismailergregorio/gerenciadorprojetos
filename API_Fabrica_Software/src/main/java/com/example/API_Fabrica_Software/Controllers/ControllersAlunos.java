@@ -28,18 +28,40 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 
+// SWAGGER / OPENAPI
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
 @RestController
 @RequestMapping("/alunos")
+@Tag(name = "Alunos", description = "Endpoints para gerenciamento de alunos cadastrados na Fábrica de Software.")
+@SecurityRequirement(name = "bearerAuth")
 public class ControllersAlunos {
+
     @Autowired
     RepositoryAlunos repositoryAlunos;
 
     @Autowired
     RepositoryProjetos repositoryProjetos;
+
     @PreAuthorize("hasAnyRole(\"ADMIN\",\"USER_N1\",\"USER_N2\")")
     @PostMapping("/addalunos")
-    public ResponseEntity<dtoAlunosRespost> postAlunos(@RequestBody dtoAlunosPost dto) {
-        // TODO: process POST request
+    @Operation(
+        summary = "Cadastrar aluno",
+        description = "Cadastra um novo aluno no sistema. Caso o código do projeto seja informado, o aluno será vinculado ao projeto."
+    )
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Aluno cadastrado com sucesso"),
+        @ApiResponse(responseCode = "401", description = "Não autenticado"),
+        @ApiResponse(responseCode = "403", description = "Sem permissão para acessar este recurso")
+    })
+    public ResponseEntity<dtoAlunosRespost> postAlunos(
+            @RequestBody dtoAlunosPost dto) {
+
         ClassAlunos aluno = new ClassAlunos();
         ClassProjetos projetoParaSalvar = new ClassProjetos();
 
@@ -79,6 +101,15 @@ public class ControllersAlunos {
 
     @GetMapping("/alunos")
     @PreAuthorize("hasAnyRole(\"ADMIN\",\"USER_N1\",\"USER_N2\",\"USER\")")
+    @Operation(
+        summary = "Listar alunos",
+        description = "Retorna uma lista com todos os alunos cadastrados."
+    )
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Lista retornada com sucesso"),
+        @ApiResponse(responseCode = "401", description = "Não autenticado"),
+        @ApiResponse(responseCode = "403", description = "Sem permissão para acessar este recurso")
+    })
     public List<dtoAlunosRespost> getAlunos() {
         List<ClassAlunos> alunos = repositoryAlunos.findAll();
         return alunos.stream().map(dtoAlunosRespost::new).toList();
@@ -86,7 +117,21 @@ public class ControllersAlunos {
 
     @GetMapping("/aluno/{ra}")
     @PreAuthorize("hasAnyRole(\"ADMIN\",\"USER_N1\",\"USER_N2\",\"USER\")")
-    public ResponseEntity<?> getAluno(@PathVariable String ra, HttpServletRequest request) {
+    @Operation(
+        summary = "Buscar aluno por RA",
+        description = "Retorna os dados do aluno correspondente ao RA informado."
+    )
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Aluno encontrado"),
+        @ApiResponse(responseCode = "404", description = "Aluno não encontrado"),
+        @ApiResponse(responseCode = "401", description = "Não autenticado"),
+        @ApiResponse(responseCode = "403", description = "Sem permissão para acessar este recurso")
+    })
+    public ResponseEntity<?> getAluno(
+            @Parameter(description = "RA do aluno", example = "20240001")
+            @PathVariable String ra,
+            HttpServletRequest request) {
+
         Optional<ClassAlunos> alunoOptional = repositoryAlunos.findByRa(ra);
 
         if (!alunoOptional.isPresent()) {
@@ -114,9 +159,24 @@ public class ControllersAlunos {
 
         return ResponseEntity.ok(dtoSelecionado);
     }
+
     @PreAuthorize("hasAnyRole(\"ADMIN\",\"USER_N1\",\"USER_N2\")")
     @DeleteMapping("/aluno/{ra}")
-    public ResponseEntity<?> delAluno(@PathVariable String ra, HttpServletRequest request) {
+    @Operation(
+        summary = "Deletar aluno",
+        description = "Remove um aluno do sistema pelo RA."
+    )
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Aluno deletado com sucesso"),
+        @ApiResponse(responseCode = "404", description = "Aluno não encontrado"),
+        @ApiResponse(responseCode = "401", description = "Não autenticado"),
+        @ApiResponse(responseCode = "403", description = "Sem permissão para acessar este recurso")
+    })
+    public ResponseEntity<?> delAluno(
+            @Parameter(description = "RA do aluno", example = "20240001")
+            @PathVariable String ra,
+            HttpServletRequest request) {
+
         Optional<ClassAlunos> deletAluno = repositoryAlunos.findByRa(ra);
 
         if (!deletAluno.isPresent()) {
@@ -138,17 +198,31 @@ public class ControllersAlunos {
         dtoAlunoResp.setNome(alunoDeletado.getNome());
         dtoAlunoResp.setEmailInstitucional(alunoDeletado.getEmailInstitucional());
         dtoAlunoResp.setCurso(alunoDeletado.getCurso());
-        // dtoAlunoResp.setProjetoSelecionado(alunoDeletado.getProjetoSelecionado());
         dtoAlunoResp.setMotivoDaInscricao(alunoDeletado.getMotivoDaInscricao());
 
         repositoryAlunos.delete(alunoDeletado);
 
         return ResponseEntity.ok(dtoAlunoResp);
     }
+
     @PreAuthorize("hasAnyRole(\"ADMIN\",\"USER_N1\",\"USER_N2\")")
     @PutMapping("/aluno/{ra}")
-    public ResponseEntity<?> putMethodName(@PathVariable String ra,
-            @RequestBody dtoAlunoAtulizarInfomacao dtoAluno,HttpServletRequest request) {
+    @Operation(
+        summary = "Atualizar aluno",
+        description = "Atualiza as informações do aluno pelo RA. Também permite vincular ou remover o projeto selecionado."
+    )
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Aluno atualizado com sucesso"),
+        @ApiResponse(responseCode = "400", description = "Dados inválidos"),
+        @ApiResponse(responseCode = "404", description = "Aluno não encontrado"),
+        @ApiResponse(responseCode = "401", description = "Não autenticado"),
+        @ApiResponse(responseCode = "403", description = "Sem permissão para acessar este recurso")
+    })
+    public ResponseEntity<?> putMethodName(
+            @Parameter(description = "RA do aluno", example = "20240001")
+            @PathVariable String ra,
+            @RequestBody dtoAlunoAtulizarInfomacao dtoAluno,
+            HttpServletRequest request) {
 
         Optional<ClassAlunos> alunoSelecionado = repositoryAlunos.findByRa(ra);
 
@@ -162,7 +236,7 @@ public class ControllersAlunos {
                             "Projeto nao encontrado",
                             request.getRequestURI()));
         }
-        
+
         ClassAlunos alunoEncontrado = alunoSelecionado.get();
 
         if (dtoAluno.getProjetoSelecionado() != null) {
@@ -189,7 +263,4 @@ public class ControllersAlunos {
 
         return ResponseEntity.ok(dtoResposta);
     }
-
-
-
 }

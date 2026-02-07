@@ -24,13 +24,28 @@ import com.example.API_Fabrica_Software.Repository.RepositoryConfgSite.Repositor
 
 import jakarta.servlet.http.HttpServletRequest;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/carrocel")
+@Tag(name = "Carrossel", description = "Endpoints para gerenciamento de imagens do carrossel do site")
 public class ControllersConfigCarrosel {
 
     @Autowired
     RepositoryCarrocel repositorioImagens;
 
+    @Operation(
+        summary = "Cadastrar imagem do carrossel",
+        description = "Cria uma nova imagem do carrossel informando o link da imagem e o status (ativada/desativada)."
+    )
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Imagem cadastrada com sucesso"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
+        @ApiResponse(responseCode = "500", description = "Erro inesperado do servidor")
+    })
     @PreAuthorize("hasAnyRole(\"ADMIN\",\"USER_N1\")")
     @PostMapping("/addimagen")
     public ResponseEntity<dtoConfigCarrocelResp> PostImagens(@RequestBody dtoConfgCarrocelPost dtoCarrocel) {
@@ -51,6 +66,15 @@ public class ControllersConfigCarrosel {
         return ResponseEntity.ok(dtoRepost);
     }
 
+    @Operation(
+        summary = "Listar imagens do carrossel",
+        description = "Retorna todas as imagens cadastradas no carrossel."
+    )
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Imagens retornadas com sucesso"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
+        @ApiResponse(responseCode = "500", description = "Erro inesperado do servidor")
+    })
     @GetMapping("/carrocel_imagens")
     @PreAuthorize("hasAnyRole(\"ADMIN\",\"USER_N1\",\"USER_N2\",\"USER\")")
     public List<dtoConfigCarrocelResp> getImagens() {
@@ -59,6 +83,16 @@ public class ControllersConfigCarrosel {
         return imagens.stream().map(dtoConfigCarrocelResp::new).toList();
     }
 
+    @Operation(
+        summary = "Atualizar imagem do carrossel",
+        description = "Atualiza os dados de uma imagem do carrossel com base no codigoImagem."
+    )
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Imagem atualizada com sucesso"),
+        @ApiResponse(responseCode = "404", description = "Imagem não encontrada"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
+        @ApiResponse(responseCode = "500", description = "Erro inesperado do servidor")
+    })
     @PreAuthorize("hasAnyRole(\"ADMIN\",\"USER_N1\")")
     @PutMapping("path/{codigoImagem}")
     public ResponseEntity<?> putAlizarImg(@PathVariable String codigoImagem,
@@ -92,6 +126,16 @@ public class ControllersConfigCarrosel {
         return ResponseEntity.ok(dtoResposta);
     }
 
+    @Operation(
+        summary = "Excluir imagem do carrossel",
+        description = "Remove uma imagem do carrossel com base no codigoImagem."
+    )
+    @ApiResponses({
+        @ApiResponse(responseCode = "200", description = "Imagem removida com sucesso"),
+        @ApiResponse(responseCode = "404", description = "Imagem não encontrada"),
+        @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
+        @ApiResponse(responseCode = "500", description = "Erro inesperado do servidor")
+    })
     @PreAuthorize("hasAnyRole(\"ADMIN\",\"USER_N1\")")
     @DeleteMapping("path/{codigoImagem}")
     public ResponseEntity<?> putAlizarImg(@PathVariable String codigoImagem, HttpServletRequest request) {

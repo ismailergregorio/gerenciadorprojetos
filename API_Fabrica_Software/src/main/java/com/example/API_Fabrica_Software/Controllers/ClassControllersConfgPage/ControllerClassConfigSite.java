@@ -9,6 +9,11 @@ import com.example.API_Fabrica_Software.DTO.ConfgDTOPage.dtoClassConfigSitePut;
 import com.example.API_Fabrica_Software.Model.ClassConfigPage.ClassConfigSite;
 import com.example.API_Fabrica_Software.Repository.RepositoryConfgSite.RepositoryConfigSite;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -24,11 +29,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/config")
+@Tag(name = "Configuração do Site", description = "Endpoints para gerenciar configurações do site")
 public class ControllerClassConfigSite {
 
   @Autowired
   RepositoryConfigSite repositoryConfigSite;
 
+  @Operation(
+      summary = "Listar configurações do site",
+      description = "Retorna todas as configurações cadastradas para o site."
+  )
+  @ApiResponses({
+      @ApiResponse(responseCode = "200", description = "Configurações retornadas com sucesso"),
+      @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
+      @ApiResponse(responseCode = "500", description = "Erro inesperado do servidor")
+  })
   @PreAuthorize("hasAnyRole(\"ADMIN\",\"USER_N1\",\"USER_N2\",\"USER\")")
   @GetMapping("/config")
   public List<dtoClassConfgSiteResp> getConfigSite() {
@@ -36,29 +51,50 @@ public class ControllerClassConfigSite {
     return itens.stream().map(dtoClassConfgSiteResp::new).toList();
   }
 
+  @Operation(
+      summary = "Criar configuração do site",
+      description = "Cria uma nova configuração do site informando nomeConfig e valorSalvo."
+  )
+  @ApiResponses({
+      @ApiResponse(responseCode = "200", description = "Configuração criada com sucesso"),
+      @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
+      @ApiResponse(responseCode = "500", description = "Erro inesperado do servidor")
+  })
   @PreAuthorize("hasAnyRole(\"ADMIN\",\"USER_N1\")")
   @PostMapping("/config")
-  public ResponseEntity<dtoClassConfgSiteResp> postMethodName(@RequestBody dtoClassConfigSitePost entity) {
-    // TODO: process POST request
-    ClassConfigSite configuracao = new ClassConfigSite();
+  public ResponseEntity<dtoClassConfgSiteResp> criarConfig(@RequestBody dtoClassConfigSitePost entity) {
 
+    ClassConfigSite configuracao = new ClassConfigSite();
     configuracao.setNomeConfig(entity.getNomeConfig());
     configuracao.setValorSalvo(entity.getValorSalvo());
 
     repositoryConfigSite.save(configuracao);
 
-    dtoClassConfgSiteResp iten = new dtoClassConfgSiteResp();
+    dtoClassConfgSiteResp dtoResp = new dtoClassConfgSiteResp();
+    dtoResp.setCodigoDaConfguracao(configuracao.getCodigoDaConfguracao());
+    dtoResp.setNomeConfig(configuracao.getNomeConfig());
+    dtoResp.setValorSalvo(configuracao.getValorSalvo());
 
-    iten.setCodigoDaConfguracao(configuracao.getCodigoDaConfguracao());
-    iten.setNomeConfig(configuracao.getNomeConfig());
-    iten.setValorSalvo(configuracao.getValorSalvo());
-
-    return ResponseEntity.ok(iten);
+    return ResponseEntity.ok(dtoResp);
   }
+
+  @Operation(
+      summary = "Atualizar configuração do site",
+      description = "Atualiza o valorSalvo de uma configuração com base no nomeConfig."
+  )
+  @ApiResponses({
+      @ApiResponse(responseCode = "200", description = "Configuração atualizada com sucesso"),
+      @ApiResponse(responseCode = "404", description = "Configuração não encontrada"),
+      @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
+      @ApiResponse(responseCode = "500", description = "Erro inesperado do servidor")
+  })
   @PreAuthorize("hasAnyRole(\"ADMIN\",\"USER_N1\")")
   @PutMapping("/config/{nomeConfig}")
-  public ResponseEntity<dtoClassConfgSiteResp> putMethodName(@PathVariable String nomeConfig,
-      @RequestBody dtoClassConfigSitePut dto) {
+  public ResponseEntity<dtoClassConfgSiteResp> atualizarConfig(
+      @PathVariable String nomeConfig,
+      @RequestBody dtoClassConfigSitePut dto
+  ) {
+
     Optional<ClassConfigSite> itens = repositoryConfigSite.findByNomeConfig(nomeConfig);
 
     if (itens.isEmpty()) {
@@ -66,12 +102,11 @@ public class ControllerClassConfigSite {
     }
 
     ClassConfigSite itenSelecionado = itens.get();
-
     itenSelecionado.setValorSalvo(dto.getValorSalvo());
+
     repositoryConfigSite.save(itenSelecionado);
 
     dtoClassConfgSiteResp dtoResp = new dtoClassConfgSiteResp();
-
     dtoResp.setCodigoDaConfguracao(itenSelecionado.getCodigoDaConfguracao());
     dtoResp.setNomeConfig(itenSelecionado.getNomeConfig());
     dtoResp.setValorSalvo(itenSelecionado.getValorSalvo());
@@ -79,9 +114,20 @@ public class ControllerClassConfigSite {
     return ResponseEntity.ok(dtoResp);
   }
 
+  @Operation(
+      summary = "Excluir configuração do site",
+      description = "Remove uma configuração do site com base no nomeConfig."
+  )
+  @ApiResponses({
+      @ApiResponse(responseCode = "200", description = "Configuração removida com sucesso"),
+      @ApiResponse(responseCode = "404", description = "Configuração não encontrada"),
+      @ApiResponse(responseCode = "403", description = "Acesso não autorizado"),
+      @ApiResponse(responseCode = "500", description = "Erro inesperado do servidor")
+  })
   @PreAuthorize("hasAnyRole(\"ADMIN\",\"USER_N1\")")
   @DeleteMapping("/config/{nomeConfig}")
-  public ResponseEntity<dtoClassConfgSiteResp> DeleteConfig(@PathVariable String nomeConfig) {
+  public ResponseEntity<dtoClassConfgSiteResp> deletarConfig(@PathVariable String nomeConfig) {
+
     Optional<ClassConfigSite> itens = repositoryConfigSite.findByNomeConfig(nomeConfig);
 
     if (itens.isEmpty()) {
@@ -89,16 +135,13 @@ public class ControllerClassConfigSite {
     }
 
     ClassConfigSite itenSelecionado = itens.get();
-
     repositoryConfigSite.delete(itenSelecionado);
 
     dtoClassConfgSiteResp dtoResp = new dtoClassConfgSiteResp();
-
     dtoResp.setCodigoDaConfguracao(itenSelecionado.getCodigoDaConfguracao());
     dtoResp.setNomeConfig(itenSelecionado.getNomeConfig());
     dtoResp.setValorSalvo(itenSelecionado.getValorSalvo());
 
     return ResponseEntity.ok(dtoResp);
   }
-
 }
